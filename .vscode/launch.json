@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run F8-UC3 CSV Standardization",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/f8_uc3_convert_to_standard_csv.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Run F8-UC4 Cleaning Pipeline",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/f8_uc4_clean_impute_normalize_aggregate.py",
+      "console": "integratedTerminal"
+    }
+  ]
+}
+

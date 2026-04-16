@@ -1,0 +1,17 @@
+[project]
+name = "biobot-neusta-comfort"
+version = "0.1.0"
+description = "Clean BioBot / Neusta environmental comfort data preparation pipeline."
+requires-python = ">=3.10"
+dependencies = [
+  "pandas>=2.2",
+  "matplotlib>=3.8",
+  "pytest>=8.0",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
