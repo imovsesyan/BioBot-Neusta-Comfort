@@ -167,8 +167,10 @@ F8-UC4 aggregated:
 - [F8-UC3 and F8-UC4 Pipeline](docs/f8/F8_UC3_UC4_pipeline.md)
 - [F8 Manager Summary](docs/f8/F8_UC3_UC4_manager_summary.md)
 - [Project Roadmap](docs/PROJECT_ROADMAP.md)
+- [Data Structure Report](docs/DATA_STRUCTURE_REPORT.md)
 - [VS Code Setup](docs/VSCODE_SETUP.md)
 - [GitHub Setup](docs/GITHUB_SETUP.md)
+- [Chat Handoff Guide](docs/CHAT_HANDOFF_GUIDE.md)
 
 ## Next Recommended Step
 
@@ -179,4 +181,3 @@ Before starting F9 machine learning, create exploratory visual checks from the p
 - missing values before and after imputation,
 - Neusta livability target distribution,
 - PM, CO2, TVOC outlier plots.
-

@@ -108,7 +108,7 @@
         "normalized_column": "sound_level_db_norm"
       }
     },
-    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot/data/processed/iot_15min_clean.csv",
+    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/iot_15min_clean.csv",
     "aggregation_frequency": "15min",
     "sensor_id_normalization": {
       "raw_non_null_sensor_ids": 7,
@@ -189,7 +189,7 @@
         "normalized_column": "battery_level_pct_norm"
       }
     },
-    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot/data/processed/aquacheck_15min_clean.csv",
+    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/aquacheck_15min_clean.csv",
     "aggregation_frequency": "15min"
   },
   "neusta": {
@@ -307,7 +307,7 @@
         "normalized_column": "humidex_c_norm"
       }
     },
-    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot/data/processed/neusta_15min_clean.csv",
+    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/neusta_15min_clean.csv",
     "aggregation_frequency": "15min",
     "target_note": "vivabilite_binary_mean is the proportion of raw rows equal to 1 inside the interval; vivabilite_binary_mode is the rounded interval label."
   },
@@ -462,7 +462,7 @@
         "normalized_column": "humidex_c_norm"
       }
     },
-    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot/data/processed/meteo_france_1h_clean.csv",
+    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/meteo_france_1h_clean.csv",
     "aggregation_frequency": "1h",
     "target_note": "Meteo France vivabilite_score_meteo remains a 0..7 score and is not the same target as Neusta binary livability."
   }

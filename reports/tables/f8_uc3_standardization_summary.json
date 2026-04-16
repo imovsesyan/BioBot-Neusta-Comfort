@@ -1,6 +1,6 @@
 {
   "iot": {
-    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot/data/interim/iot_observations_standardized.csv",
+    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/interim/iot_observations_standardized.csv",
     "rows": 857574,
     "columns": 18,
     "column_names": [
@@ -30,7 +30,7 @@
     "sensor_count": 7
   },
   "aquacheck": {
-    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot/data/interim/aquacheck_observations_standardized.csv",
+    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/interim/aquacheck_observations_standardized.csv",
     "rows": 298703,
     "columns": 15,
     "column_names": [
@@ -57,7 +57,7 @@
     "sensor_count": 17
   },
   "neusta": {
-    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot/data/interim/neusta_observations_standardized.csv",
+    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/interim/neusta_observations_standardized.csv",
     "rows": 395039,
     "columns": 22,
     "column_names": [
@@ -90,7 +90,7 @@
     "duplicate_rows": 0
   },
   "meteo_france": {
-    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot/data/interim/meteo_france_observations_standardized.csv",
+    "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/interim/meteo_france_observations_standardized.csv",
     "rows": 468570,
     "columns": 25,
     "column_names": [
