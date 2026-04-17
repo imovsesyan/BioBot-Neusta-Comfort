@@ -26,6 +26,28 @@
       "uses_sequence_window": false
     },
     {
+      "model": "tree_blend_validation_weighted",
+      "family": "ensemble_blend",
+      "description": "Validation-weighted blend of tree models",
+      "test_mae": 0.00336092424412464,
+      "test_rmse": 0.02011291488257972,
+      "test_r2": 0.9971875284671785,
+      "validation_mae": 0.002901308906587186,
+      "evaluation_rows": 648,
+      "uses_sequence_window": false
+    },
+    {
+      "model": "tree_blend_equal_weight",
+      "family": "ensemble_blend",
+      "description": "Equal-weight blend of tree models",
+      "test_mae": 0.003366848611515489,
+      "test_rmse": 0.019986736541492002,
+      "test_r2": 0.9972227058491584,
+      "validation_mae": 0.0029325095789356314,
+      "evaluation_rows": 648,
+      "uses_sequence_window": false
+    },
+    {
       "model": "xgboost",
       "family": "classical_ml",
       "description": "XGBoost tree ensemble",

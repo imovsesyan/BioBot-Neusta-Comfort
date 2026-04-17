@@ -55,6 +55,8 @@ Random shuffling is not used.
 |---|---:|---:|---:|
 | Random Forest | 0.0033 | 0.0218 | 0.9967 |
 | Histogram Gradient Boosting | 0.0033 | 0.0188 | 0.9975 |
+| Validation-weighted tree blend | 0.0034 | 0.0201 | 0.9972 |
+| Equal-weight tree blend | 0.0034 | 0.0200 | 0.9972 |
 | XGBoost | 0.0036 | 0.0210 | 0.9969 |
 | Ridge Regression | 0.1753 | 0.2473 | 0.5748 |
 | Mean Baseline | 0.3450 | 0.3887 | -0.0503 |
@@ -65,9 +67,17 @@ The best model by test MAE is:
 random_forest
 ```
 
+The best model by test RMSE is:
+
+```text
+hist_gradient_boosting
+```
+
 ## Interpretation
 
 The tree models perform extremely well. This is promising technically, but it is also a warning sign.
+
+The two blended tree ensembles are strong, but they do not improve the best MAE. In this dataset, the individual tree ensemble models are already very close to the target rule.
 
 The most likely explanation is that the Neusta livability label is highly dependent on temperature, humidity, and humidex. Therefore, the model may be learning a label-generation rule rather than independent human comfort.
 

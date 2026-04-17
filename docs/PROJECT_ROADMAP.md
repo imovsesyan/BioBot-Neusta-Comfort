@@ -38,6 +38,12 @@ reports/tables/f9_ml_vs_dl_comparison.json
 reports/figures/f9_ml_vs_dl_comparison.png
 ```
 
+Ensemble modeling note:
+
+```text
+docs/f9/F9_ENSEMBLE_MODELING.md
+```
+
 ## Phase F10: Risk Detection
 
 F10 should use explainable rules before ML alerts.

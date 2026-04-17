@@ -34,6 +34,11 @@ MODEL_DESCRIPTIONS = {
     "random_forest": ("classical_ml", "Tree ensemble"),
     "hist_gradient_boosting": ("classical_ml", "Gradient boosting tree ensemble"),
     "xgboost": ("classical_ml", "XGBoost tree ensemble"),
+    "tree_blend_equal_weight": ("ensemble_blend", "Equal-weight blend of tree models"),
+    "tree_blend_validation_weighted": (
+        "ensemble_blend",
+        "Validation-weighted blend of tree models",
+    ),
     "cnn_lstm": ("deep_learning", "Sequence neural network"),
     "lstm": ("deep_learning", "Sequence neural network"),
 }
@@ -90,10 +95,12 @@ def build_comparison_rows(ml_results: dict, dl_results: dict) -> list[dict]:
 
 def save_comparison_figure(comparison: pd.DataFrame, path: Path) -> None:
     plot_df = comparison.sort_values("test_mae", ascending=True)
-    colors = [
-        "#2f6f7e" if family == "classical_ml" else "#d59635"
-        for family in plot_df["family"].tolist()
-    ]
+    family_colors = {
+        "classical_ml": "#2f6f7e",
+        "ensemble_blend": "#5a78b5",
+        "deep_learning": "#d59635",
+    }
+    colors = [family_colors.get(family, "#777777") for family in plot_df["family"].tolist()]
     ax = plot_df.plot.barh(
         x="model",
         y="test_mae",

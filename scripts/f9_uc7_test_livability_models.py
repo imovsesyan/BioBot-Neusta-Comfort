@@ -21,6 +21,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from sklearn.compose import TransformedTargetRegressor
 from sklearn.dummy import DummyRegressor
@@ -46,6 +47,7 @@ DEFAULT_RESULTS = ROOT / "reports" / "tables" / "f9_uc7_livability_model_results
 DEFAULT_PREDICTIONS = ROOT / "reports" / "tables" / "f9_uc7_livability_test_predictions.csv"
 DEFAULT_FIGURE = ROOT / "reports" / "figures" / "f9_uc7_model_comparison.png"
 DEFAULT_TIMESERIES_FIGURE = ROOT / "reports" / "figures" / "f9_uc7_test_predictions_timeseries.png"
+TREE_ENSEMBLE_MEMBERS = ["random_forest", "hist_gradient_boosting", "xgboost"]
 
 
 def build_xgboost_model(random_state: int) -> Pipeline | None:
@@ -144,10 +146,126 @@ def build_models(random_state: int) -> tuple[dict[str, Pipeline], list[str]]:
     return models, skipped_models
 
 
-def clip_score(predictions):
+def clip_score(predictions) -> pd.Series:
     """Keep livability score predictions inside the known 0..1 target range."""
 
-    return predictions.clip(0.0, 1.0)
+    return pd.Series(predictions).clip(0.0, 1.0)
+
+
+def score_predictions(
+    model_name: str,
+    y_validation: pd.Series,
+    validation_pred: pd.Series,
+    y_test: pd.Series,
+    test_pred: pd.Series,
+    extra: dict | None = None,
+) -> dict:
+    """Create a result row from validation and test predictions."""
+
+    validation_metrics = regression_metrics(y_validation.to_numpy(), validation_pred.to_numpy())
+    test_metrics = regression_metrics(y_test.to_numpy(), test_pred.to_numpy())
+    row = {
+        "model": model_name,
+        "validation_mae": validation_metrics["mae"],
+        "validation_rmse": validation_metrics["rmse"],
+        "validation_r2": validation_metrics["r2"],
+        "test_mae": test_metrics["mae"],
+        "test_rmse": test_metrics["rmse"],
+        "test_r2": test_metrics["r2"],
+    }
+    if extra:
+        row.update(extra)
+    return row
+
+
+def weighted_average_predictions(
+    predictions_by_model: dict[str, dict[str, pd.Series]],
+    model_names: list[str],
+    weights: dict[str, float],
+    prediction_key: str,
+) -> pd.Series:
+    """Blend predictions from several already fitted models."""
+
+    blended = np.zeros(len(predictions_by_model[model_names[0]][prediction_key]), dtype=float)
+    for model_name in model_names:
+        blended += weights[model_name] * predictions_by_model[model_name][prediction_key].to_numpy()
+    return clip_score(blended)
+
+
+def inverse_validation_mae_weights(results: list[dict], model_names: list[str]) -> dict[str, float]:
+    """Weight stronger validation models more heavily."""
+
+    mae_by_model = {
+        result["model"]: result["validation_mae"]
+        for result in results
+        if result["model"] in model_names
+    }
+    inverse_scores = {
+        model_name: 1.0 / max(mae_by_model[model_name], 1e-12)
+        for model_name in model_names
+    }
+    total = sum(inverse_scores.values())
+    return {model_name: inverse_scores[model_name] / total for model_name in model_names}
+
+
+def add_tree_blend_ensembles(
+    results: list[dict],
+    predictions_by_model: dict[str, dict[str, pd.Series]],
+    y_validation: pd.Series,
+    y_test: pd.Series,
+) -> None:
+    """Add prediction-level ensembles made from the strongest tree models."""
+
+    available_members = [
+        model_name
+        for model_name in TREE_ENSEMBLE_MEMBERS
+        if model_name in predictions_by_model
+    ]
+    if len(available_members) < 2:
+        return
+
+    ensemble_specs = {
+        "tree_blend_equal_weight": {
+            model_name: 1.0 / len(available_members)
+            for model_name in available_members
+        },
+        "tree_blend_validation_weighted": inverse_validation_mae_weights(
+            results,
+            available_members,
+        ),
+    }
+
+    for ensemble_name, weights in ensemble_specs.items():
+        validation_pred = weighted_average_predictions(
+            predictions_by_model,
+            available_members,
+            weights,
+            "validation_pred",
+        )
+        test_pred = weighted_average_predictions(
+            predictions_by_model,
+            available_members,
+            weights,
+            "test_pred",
+        )
+        results.append(
+            score_predictions(
+                ensemble_name,
+                y_validation,
+                validation_pred,
+                y_test,
+                test_pred,
+                extra={
+                    "model_family": "prediction_blend_ensemble",
+                    "ensemble_members": available_members,
+                    "ensemble_weights": weights,
+                },
+            )
+        )
+        predictions_by_model[ensemble_name] = {
+            "validation_pred": validation_pred,
+            "test_pred": test_pred,
+        }
 
 
 def save_model_comparison_figure(results: list[dict], path: Path) -> None:
@@ -217,30 +335,23 @@ def main() -> None:
     y_test = test_df[target_column]
 
     results = []
-    fitted_models = {}
+    predictions_by_model = {}
     models, skipped_models = build_models(args.random_state)
     for model_name, model in models.items():
         model.fit(x_train, y_train)
-        validation_pred = clip_score(pd.Series(model.predict(x_validation)))
-        test_pred = clip_score(pd.Series(model.predict(x_test)))
-        validation_metrics = regression_metrics(y_validation.to_numpy(), validation_pred.to_numpy())
-        test_metrics = regression_metrics(y_test.to_numpy(), test_pred.to_numpy())
-        results.append(
-            {
-                "model": model_name,
-                "validation_mae": validation_metrics["mae"],
-                "validation_rmse": validation_metrics["rmse"],
-                "validation_r2": validation_metrics["r2"],
-                "test_mae": test_metrics["mae"],
-                "test_rmse": test_metrics["rmse"],
-                "test_r2": test_metrics["r2"],
-            }
-        )
-        fitted_models[model_name] = (model, test_pred)
+        validation_pred = clip_score(model.predict(x_validation))
+        test_pred = clip_score(model.predict(x_test))
+        results.append(score_predictions(model_name, y_validation, validation_pred, y_test, test_pred))
+        predictions_by_model[model_name] = {
+            "validation_pred": validation_pred,
+            "test_pred": test_pred,
+        }
+
+    add_tree_blend_ensembles(results, predictions_by_model, y_validation, y_test)
 
     best_result = min(results, key=lambda item: item["test_mae"])
     best_model_name = best_result["model"]
-    _, best_test_predictions = fitted_models[best_model_name]
+    best_test_predictions = predictions_by_model[best_model_name]["test_pred"]
 
     prediction_table = pd.DataFrame(
         {

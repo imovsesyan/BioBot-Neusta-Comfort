@@ -191,6 +191,8 @@ F9-UC7 livability prediction:
 |---|---:|---:|---:|
 | Random Forest | 0.0033 | 0.0218 | 0.9967 |
 | Histogram Gradient Boosting | 0.0033 | 0.0188 | 0.9975 |
+| Validation-weighted tree blend | 0.0034 | 0.0201 | 0.9972 |
+| Equal-weight tree blend | 0.0034 | 0.0200 | 0.9972 |
 | XGBoost | 0.0036 | 0.0210 | 0.9969 |
 | Ridge Regression | 0.1753 | 0.2473 | 0.5748 |
 | CNN-LSTM | 0.3000 | 0.4174 | -0.1879 |
@@ -221,6 +223,7 @@ F9-UC7 livability prediction:
 - [F9 Model Testing Results](docs/f9/F9_UC7_model_testing_results.md)
 - [F9 Advanced Models](docs/f9/F9_UC8_advanced_models.md)
 - [F9 ML vs Deep Learning Comparison](docs/f9/F9_ML_VS_DL_COMPARISON.md)
+- [F9 Ensemble Modeling](docs/f9/F9_ENSEMBLE_MODELING.md)
 
 ## Next Recommended Step
 

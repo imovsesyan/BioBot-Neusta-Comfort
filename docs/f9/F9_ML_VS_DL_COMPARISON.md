@@ -19,6 +19,8 @@ Are classical machine learning models better than deep learning for the current 
 | Random Forest | Classical ML | Nonlinear tree ensemble |
 | Histogram Gradient Boosting | Classical ML | Boosted tree ensemble |
 | XGBoost | Classical ML | Strong boosted tree benchmark |
+| Equal-weight tree blend | Ensemble blend | Average of Random Forest, Histogram Gradient Boosting, and XGBoost |
+| Validation-weighted tree blend | Ensemble blend | Blend weighted by validation MAE |
 | CNN-LSTM | Deep learning | Sequence model experiment |
 
 ## Commands
@@ -55,6 +57,8 @@ reports/figures/f9_ml_vs_dl_comparison.png
 |---|---|---:|---:|---:|
 | Random Forest | Classical ML | 0.0033 | 0.0218 | 0.9967 |
 | Histogram Gradient Boosting | Classical ML | 0.0033 | 0.0188 | 0.9975 |
+| Validation-weighted tree blend | Ensemble blend | 0.0034 | 0.0201 | 0.9972 |
+| Equal-weight tree blend | Ensemble blend | 0.0034 | 0.0200 | 0.9972 |
 | XGBoost | Classical ML | 0.0036 | 0.0210 | 0.9969 |
 | Ridge Regression | Classical ML | 0.1753 | 0.2473 | 0.5748 |
 | CNN-LSTM | Deep Learning | 0.3000 | 0.4174 | -0.1879 |
@@ -69,6 +73,8 @@ The strongest current family is tree-based tabular machine learning:
 - Random Forest,
 - Histogram Gradient Boosting,
 - XGBoost.
+
+The blended ensembles are also strong, but they do not beat the best individual tree models. This suggests that the models are learning almost the same signal.
 
 This is expected because:
 
@@ -98,6 +104,7 @@ The CNN-LSTM uses the same chronological split, but it evaluates fewer test rows
 For the current project phase:
 
 - keep Random Forest, Histogram Gradient Boosting, and XGBoost as the main model candidates,
+- keep blended tree ensembles as a stability check, not as the primary model,
 - keep CNN-LSTM as an advanced experiment,
 - postpone Transformer models,
 - do not build a recommendation system yet,

@@ -12,6 +12,7 @@ Paste these files first:
 4. `docs/f8/F8_UC3_UC4_pipeline.md`
 5. `docs/f9/F9_MANAGER_SUMMARY.md`
 6. `docs/f9/F9_ML_VS_DL_COMPARISON.md`
+7. `docs/f9/F9_ENSEMBLE_MODELING.md`
 
 This is usually enough for a normal written documentation report.
 
@@ -89,5 +90,6 @@ For an F9-only report, paste:
 4. `docs/f9/F9_UC7_model_testing_results.md`
 5. `docs/f9/F9_UC8_advanced_models.md`
 6. `docs/f9/F9_MANAGER_SUMMARY.md`
-7. `reports/tables/f9_uc7_livability_model_results.json`
-8. `reports/tables/f9_ml_vs_dl_comparison.json`
+7. `docs/f9/F9_ENSEMBLE_MODELING.md`
+8. `reports/tables/f9_uc7_livability_model_results.json`
+9. `reports/tables/f9_ml_vs_dl_comparison.json`
