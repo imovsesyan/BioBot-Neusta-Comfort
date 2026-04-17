@@ -35,12 +35,14 @@ This is a 0 to 1 livability score from the processed Neusta dataset.
 
 Tree-based tabular models perform best on the current dataset.
 
-| Model | Test MAE | Test RMSE | Test R2 |
-|---|---:|---:|---:|
-| Random Forest | 0.0033 | 0.0218 | 0.9967 |
-| Histogram Gradient Boosting | 0.0033 | 0.0188 | 0.9975 |
-| Ridge Regression | 0.1753 | 0.2473 | 0.5748 |
-| Mean Baseline | 0.3450 | 0.3887 | -0.0503 |
+| Model | Family | Test MAE | Test RMSE | Test R2 |
+|---|---|---:|---:|---:|
+| Random Forest | Classical ML | 0.0033 | 0.0218 | 0.9967 |
+| Histogram Gradient Boosting | Classical ML | 0.0033 | 0.0188 | 0.9975 |
+| XGBoost | Classical ML | 0.0036 | 0.0210 | 0.9969 |
+| Ridge Regression | Classical ML | 0.1753 | 0.2473 | 0.5748 |
+| CNN-LSTM | Deep Learning | 0.3000 | 0.4174 | -0.1879 |
+| Mean Baseline | Baseline | 0.3450 | 0.3887 | -0.0503 |
 
 ## Scientific Caution
 
@@ -58,12 +60,12 @@ This means humidex is useful for future F10 risk detection, but Neusta alone is 
 
 ## Advanced Model Finding
 
-The CNN-LSTM smoke test did not beat tabular baselines.
+The CNN-LSTM smoke test did not beat tabular baselines. XGBoost performs similarly to Random Forest and Histogram Gradient Boosting.
 
 Current decision:
 
 - keep tabular models as the main F9 baseline,
+- include XGBoost as a strong tabular benchmark,
 - keep CNN-LSTM for future experiments,
 - postpone Transformer models,
 - postpone recommendation and interpretation work.
-

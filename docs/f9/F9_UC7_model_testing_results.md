@@ -31,6 +31,12 @@ reports/figures/f9_uc7_model_comparison.png
 reports/figures/f9_uc7_test_predictions_timeseries.png
 ```
 
+XGBoost is included in this benchmark. On macOS, XGBoost may require:
+
+```bash
+brew install libomp
+```
+
 ## Split Strategy
 
 The data is split chronologically:
@@ -49,6 +55,7 @@ Random shuffling is not used.
 |---|---:|---:|---:|
 | Random Forest | 0.0033 | 0.0218 | 0.9967 |
 | Histogram Gradient Boosting | 0.0033 | 0.0188 | 0.9975 |
+| XGBoost | 0.0036 | 0.0210 | 0.9969 |
 | Ridge Regression | 0.1753 | 0.2473 | 0.5748 |
 | Mean Baseline | 0.3450 | 0.3887 | -0.0503 |
 
@@ -74,4 +81,3 @@ Before treating the model as final:
 2. Run a future-horizon prediction task, for example predicting the next 15 or 60 minutes.
 3. Validate the meaning of Neusta `vivabilite`.
 4. Compare results on Meteo France separately if using the 0 to 7 target.
-

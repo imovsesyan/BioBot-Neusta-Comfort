@@ -48,10 +48,44 @@ DEFAULT_FIGURE = ROOT / "reports" / "figures" / "f9_uc7_model_comparison.png"
 DEFAULT_TIMESERIES_FIGURE = ROOT / "reports" / "figures" / "f9_uc7_test_predictions_timeseries.png"
 
 
-def build_models(random_state: int) -> dict[str, Pipeline]:
+def build_xgboost_model(random_state: int) -> Pipeline | None:
+    """Create an XGBoost model when the optional dependency is installed."""
+
+    try:
+        from xgboost import XGBRegressor
+    except Exception as exc:
+        message = next((line.strip() for line in str(exc).splitlines() if line.strip()), repr(exc))
+        print(f"Skipping XGBoost because it could not be imported: {message}")
+        return None
+
+    return Pipeline(
+        [
+            ("imputer", SimpleImputer(strategy="median")),
+            (
+                "model",
+                XGBRegressor(
+                    objective="reg:squarederror",
+                    eval_metric="rmse",
+                    n_estimators=400,
+                    learning_rate=0.03,
+                    max_depth=3,
+                    min_child_weight=2,
+                    subsample=0.9,
+                    colsample_bytree=0.9,
+                    reg_lambda=1.0,
+                    random_state=random_state,
+                    n_jobs=1,
+                    tree_method="hist",
+                ),
+            ),
+        ]
+    )
+
+
+def build_models(random_state: int) -> tuple[dict[str, Pipeline], list[str]]:
     """Create baseline tabular models."""
 
-    return {
+    models = {
         "mean_baseline": Pipeline(
             [
                 ("imputer", SimpleImputer(strategy="median")),
@@ -100,6 +134,14 @@ def build_models(random_state: int) -> dict[str, Pipeline]:
             ]
         ),
     }
+    skipped_models = []
+    xgboost_model = build_xgboost_model(random_state)
+    if xgboost_model is None:
+        skipped_models.append("xgboost_missing_optional_dependency")
+    else:
+        models["xgboost"] = xgboost_model
+
+    return models, skipped_models
 
 
 def clip_score(predictions):
@@ -176,7 +218,8 @@ def main() -> None:
 
     results = []
     fitted_models = {}
-    for model_name, model in build_models(args.random_state).items():
+    models, skipped_models = build_models(args.random_state)
+    for model_name, model in models.items():
         model.fit(x_train, y_train)
         validation_pred = clip_score(pd.Series(model.predict(x_validation)))
         test_pred = clip_score(pd.Series(model.predict(x_test)))
@@ -228,6 +271,7 @@ def main() -> None:
         },
         "best_model_by_test_mae": best_model_name,
         "results": results,
+        "skipped_models": skipped_models,
         "scope_note": "Recommendation systems and model interpretation are intentionally out of scope for this F9 run.",
     }
 
@@ -248,6 +292,8 @@ def main() -> None:
             f"RMSE={result['test_rmse']:.4f}, "
             f"R2={result['test_r2']:.4f}"
         )
+    if skipped_models:
+        print("Skipped models:", ", ".join(skipped_models))
     print(f"Wrote {args.results}")
     print(f"Wrote {args.predictions}")
     print(f"Wrote {args.figure}")

@@ -1,0 +1,82 @@
+{
+  "task": "F9 ML vs deep learning comparison",
+  "target": "vivabilite_binary_mean",
+  "input_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/neusta_15min_clean.csv",
+  "comparison_rows": [
+    {
+      "model": "random_forest",
+      "family": "classical_ml",
+      "description": "Tree ensemble",
+      "test_mae": 0.0032853384036477576,
+      "test_rmse": 0.021791377266302998,
+      "test_r2": 0.9966985291806002,
+      "validation_mae": 0.0025677887994818315,
+      "evaluation_rows": 648,
+      "uses_sequence_window": false
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "family": "classical_ml",
+      "description": "Gradient boosting tree ensemble",
+      "test_mae": 0.003322186050282937,
+      "test_rmse": 0.01880726878895436,
+      "test_r2": 0.9975408242543489,
+      "validation_mae": 0.0033420719997665615,
+      "evaluation_rows": 648,
+      "uses_sequence_window": false
+    },
+    {
+      "model": "xgboost",
+      "family": "classical_ml",
+      "description": "XGBoost tree ensemble",
+      "test_mae": 0.0036104626951962643,
+      "test_rmse": 0.020983691109457116,
+      "test_r2": 0.9969387283248564,
+      "validation_mae": 0.003232059173692621,
+      "evaluation_rows": 648,
+      "uses_sequence_window": false
+    },
+    {
+      "model": "ridge_regression",
+      "family": "classical_ml",
+      "description": "Linear regression with regularization",
+      "test_mae": 0.17534760582952755,
+      "test_rmse": 0.24730614403654536,
+      "test_r2": 0.5747856465725936,
+      "validation_mae": 0.16378568398587956,
+      "evaluation_rows": 648,
+      "uses_sequence_window": false
+    },
+    {
+      "model": "cnn_lstm",
+      "family": "deep_learning",
+      "description": "Sequence neural network",
+      "test_mae": 0.30003470182418823,
+      "test_rmse": 0.4173707159678776,
+      "test_r2": -0.187933087348938,
+      "validation_mae": null,
+      "evaluation_rows": 632,
+      "uses_sequence_window": true
+    },
+    {
+      "model": "mean_baseline",
+      "family": "classical_ml",
+      "description": "Naive mean baseline",
+      "test_mae": 0.3449590211657908,
+      "test_rmse": 0.3886810830029215,
+      "test_r2": -0.05032792516063345,
+      "validation_mae": 0.3784436403710793,
+      "evaluation_rows": 648,
+      "uses_sequence_window": false
+    }
+  ],
+  "best_model_by_test_mae": "random_forest",
+  "best_family_by_test_mae": "classical_ml",
+  "conclusion": "On the current Neusta livability target, classical tabular machine learning models outperform the CNN-LSTM experiment. This does not prove deep learning is generally worse; it means the current dataset is small and tabular, and the target may be formula-derived from environmental variables.",
+  "fairness_notes": [
+    "The classical ML models and XGBoost use the same chronological test split.",
+    "The CNN-LSTM uses the same chronological split but evaluates fewer rows because sequence windows need previous observations.",
+    "A stricter future comparison can align all models on exactly the same test timestamps."
+  ],
+  "scope_note": "Recommendation systems and model interpretation remain out of scope."
+}

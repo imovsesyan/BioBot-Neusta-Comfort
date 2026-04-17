@@ -94,7 +94,17 @@
       "test_mae": 0.003322186050282937,
       "test_rmse": 0.01880726878895436,
       "test_r2": 0.9975408242543489
+    },
+    {
+      "model": "xgboost",
+      "validation_mae": 0.003232059173692621,
+      "validation_rmse": 0.01994162217622953,
+      "validation_r2": 0.997843545943788,
+      "test_mae": 0.0036104626951962643,
+      "test_rmse": 0.020983691109457116,
+      "test_r2": 0.9969387283248564
     }
   ],
+  "skipped_models": [],
   "scope_note": "Recommendation systems and model interpretation are intentionally out of scope for this F9 run."
 }

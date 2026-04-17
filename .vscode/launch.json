@@ -52,6 +52,16 @@
       "program": "${workspaceFolder}/scripts/f9_uc8_train_sequence_model.py",
       "args": ["--model", "cnn_lstm", "--epochs", "8"],
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Run F9 ML vs DL Comparison",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/f9_compare_ml_dl_models.py",
+      "console": "integratedTerminal",
+      "env": {
+        "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib"
+      }
     }
   ]
 }

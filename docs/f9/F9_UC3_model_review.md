@@ -45,13 +45,15 @@ For F9-UC7, the current implemented comparison is:
 - mean baseline,
 - ridge regression,
 - random forest,
-- histogram gradient boosting.
+- histogram gradient boosting,
+- XGBoost.
 
 For F9-UC8, a CNN-LSTM smoke test is implemented as an optional advanced experiment.
+
+The current evidence favors tabular tree-based machine learning over CNN-LSTM for this dataset.
 
 ## Scientific Interpretation
 
 If tree models perform nearly perfectly, the first conclusion should not be "the model is finished." The first conclusion should be:
 
 > The current target may be deterministic or highly formula-derived from the input features. We need to verify the target definition before treating model performance as evidence of real comfort prediction.
-

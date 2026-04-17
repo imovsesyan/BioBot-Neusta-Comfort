@@ -28,8 +28,15 @@ Recommended order:
 | F9-UC2 Problem definition | Complete | Define livability-score prediction and challenges | `docs/f9/F9_UC2_problem_definition.md` |
 | F9-UC3 Model review | Complete | Compare relevant model families | `docs/f9/F9_UC3_model_review.md` |
 | F9-UC6 Humidex thresholds | Complete | Identify critical humidex zones | `docs/f9/F9_UC6_humidex_thresholds.md` |
-| F9-UC7 Test prediction models | Complete | Compare baseline score-prediction models | `reports/tables/f9_uc7_livability_model_results.json` |
+| F9-UC7 Test prediction models | Complete | Compare baseline score-prediction models, including XGBoost | `reports/tables/f9_uc7_livability_model_results.json` |
 | F9-UC8 Advanced models | Initial test complete | Test CNN-LSTM as an advanced candidate | `reports/tables/f9_uc8_sequence_model_results.json` |
+
+Additional comparison output:
+
+```text
+reports/tables/f9_ml_vs_dl_comparison.json
+reports/figures/f9_ml_vs_dl_comparison.png
+```
 
 ## Phase F10: Risk Detection
 
