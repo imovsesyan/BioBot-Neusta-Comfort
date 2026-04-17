@@ -45,8 +45,9 @@ Add these small report files:
 3. `reports/tables/f9_uc6_humidex_threshold_summary.json`
 4. `reports/tables/f9_uc7_livability_model_results.json`
 5. `reports/tables/f10_uc1_livable_dangerous_summary.json`
-6. `reports/tables/f10_uc3_rule_alert_summary.json`
-7. `reports/tables/f10_uc4_risk_classifier_results.json`
+6. `reports/tables/f10_uc1_livability_score_status_summary.json`
+7. `reports/tables/f10_uc3_rule_alert_summary.json`
+8. `reports/tables/f10_uc4_risk_classifier_results.json`
 
 Do not paste large CSV files.
 

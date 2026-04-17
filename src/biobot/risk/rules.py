@@ -6,6 +6,8 @@ import pandas as pd
 
 
 RISK_LEVEL_ORDER = ["livable", "discomfort", "high_risk", "dangerous"]
+LIVABILITY_STATUS_ORDER = ["livable", "not_livable"]
+DEFAULT_LIVABILITY_THRESHOLD = 0.5
 
 RISK_LEVEL_DETAILS = {
     "livable": {
@@ -95,6 +97,58 @@ def add_risk_labels(df: pd.DataFrame, humidex_column: str = "humidex_c") -> pd.D
     return out
 
 
+def assign_livability_score_status(
+    score: pd.Series,
+    threshold: float = DEFAULT_LIVABILITY_THRESHOLD,
+    higher_score_means_risk: bool = True,
+) -> pd.DataFrame:
+    """Assign livable/not-livable status from a 0..1 score.
+
+    In the current Neusta `vivabilite_binary_mean` data, higher values appear
+    during warmer and less comfortable periods. Therefore the default
+    interpretation is: score >= 0.5 means not livable.
+    """
+
+    values = pd.to_numeric(score, errors="coerce")
+    status = pd.Series(pd.NA, index=values.index, dtype="object")
+
+    if higher_score_means_risk:
+        status.loc[values < threshold] = "livable"
+        status.loc[values >= threshold] = "not_livable"
+    else:
+        status.loc[values >= threshold] = "livable"
+        status.loc[values < threshold] = "not_livable"
+
+    return pd.DataFrame(
+        {
+            "livability_score": values,
+            "livability_status": status,
+            "livability_status_score": status.map({"livable": 0, "not_livable": 1}).astype("Int64"),
+            "is_livable_by_score": status == "livable",
+            "is_not_livable_by_score": status == "not_livable",
+        }
+    )
+
+
+def add_livability_score_status(
+    df: pd.DataFrame,
+    score_column: str = "vivabilite_binary_mean",
+    threshold: float = DEFAULT_LIVABILITY_THRESHOLD,
+    higher_score_means_risk: bool = True,
+) -> pd.DataFrame:
+    """Return a copy of a table with F10 livability score status columns."""
+
+    out = df.copy()
+    score_status = assign_livability_score_status(
+        out[score_column],
+        threshold=threshold,
+        higher_score_means_risk=higher_score_means_risk,
+    )
+    for column in score_status.columns:
+        out[column] = score_status[column].values
+    return out
+
+
 def create_rule_alerts(risk_df: pd.DataFrame) -> pd.DataFrame:
     """Create rule-based alerts from risk-labeled rows."""
 
@@ -125,3 +179,9 @@ def risk_counts(df: pd.DataFrame) -> dict[str, int]:
     counts = df["risk_level"].value_counts().reindex(RISK_LEVEL_ORDER, fill_value=0)
     return {level: int(counts[level]) for level in RISK_LEVEL_ORDER}
 
+
+def livability_status_counts(df: pd.DataFrame) -> dict[str, int]:
+    """Count rows in each ordered F10 livability score status."""
+
+    counts = df["livability_status"].value_counts().reindex(LIVABILITY_STATUS_ORDER, fill_value=0)
+    return {level: int(counts[level]) for level in LIVABILITY_STATUS_ORDER}

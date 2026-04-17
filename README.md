@@ -225,7 +225,7 @@ F10 risk detection:
 
 | Task | Main result |
 |---|---|
-| F10-UC1 | Meteo France has 355,101 livable rows, 74,067 discomfort rows, 22,030 high-risk rows, and 1,597 dangerous rows. Neusta is 100% livable by humidex. |
+| F10-UC1 | Score-based livability status added: Neusta actual score has 3,237 livable and 1,078 not-livable rows; F9 predicted test score has 532 livable and 116 not-livable rows. Humidex heat-risk labels are kept as a separate safety layer. |
 | F10-UC3 | 97,694 simulated rule-based alerts generated from Meteo France, including 3 critical humidex alerts. |
 | F10-UC4 | Random Forest classifier reached macro F1 1.0000 on rule-derived risk labels. |
 
@@ -237,7 +237,8 @@ F10 risk detection:
 - Normalized columns are added for future baseline ML models, but raw cleaned values are preserved.
 - The first F9 target is Neusta `vivabilite_binary_mean`.
 - Very high tree-model scores are treated as a scientific warning: the target may be formula-derived from environmental variables, so the current model is best described as reproducing the Neusta score, not yet proving perceived human comfort.
-- F10 risk labels are humidex-rule labels. The ML classifier reproduces those rules and should not be interpreted as independent medical risk prediction.
+- F10-UC1 separates overall score-based livability status from humidex heat danger. The current Neusta binary target is interpreted as `score < 0.5 = livable` and `score >= 0.5 = not livable`, but this direction should be confirmed with the project owner.
+- F10-UC4 currently classifies humidex-rule labels. It should not be interpreted as independent medical risk prediction.
 
 ## Documentation
 

@@ -1,0 +1,50 @@
+{
+  "task": "F10-UC1 livability score status",
+  "status_rule": {
+    "score_column": "vivabilite_binary_mean or F9 predicted score",
+    "threshold": 0.5,
+    "current_interpretation": "score < 0.5 is livable; score >= 0.5 is not livable",
+    "reason": "In the current Neusta binary target, higher values occur during warmer, less comfortable periods.",
+    "validation_needed": "Confirm the meaning of Neusta vivabilite_binary with the project owner."
+  },
+  "sources": {
+    "neusta_actual_score": {
+      "source": "neusta_actual_score",
+      "input_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/neusta_15min_clean.csv",
+      "score_column": "vivabilite_binary_mean",
+      "threshold": 0.5,
+      "score_interpretation": "Current Neusta binary target: score >= 0.5 means not livable.",
+      "rows_with_status": 4315,
+      "score_min": 0.0,
+      "score_max": 1.0,
+      "score_mean": 0.24976719688191298,
+      "status_counts": {
+        "livable": 3237,
+        "not_livable": 1078
+      },
+      "status_percentages": {
+        "livable": 75.01738122827346,
+        "not_livable": 24.982618771726536
+      }
+    },
+    "f9_predicted_score": {
+      "source": "f9_predicted_score",
+      "input_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/reports/tables/f9_uc7_livability_test_predictions.csv",
+      "score_column": "predicted_livability_score",
+      "threshold": 0.5,
+      "score_interpretation": "Current Neusta binary target: score >= 0.5 means not livable.",
+      "rows_with_status": 648,
+      "score_min": 0.0,
+      "score_max": 1.0,
+      "score_mean": 0.17851196944920278,
+      "status_counts": {
+        "livable": 532,
+        "not_livable": 116
+      },
+      "status_percentages": {
+        "livable": 82.09876543209876,
+        "not_livable": 17.901234567901234
+      }
+    }
+  }
+}

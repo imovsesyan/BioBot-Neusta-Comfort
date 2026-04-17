@@ -2,11 +2,15 @@
 
 ## Scope
 
-This F10 phase focuses on initial risk detection using humidex thresholds.
+This F10 phase focuses on initial risk detection using two related layers:
+
+- overall livability status from the Neusta/F9 score,
+- humidex heat danger as a safety threshold layer.
 
 Included:
 
-- livable and dangerous period definition,
+- livable and not-livable period definition from score thresholds,
+- humidex danger period definition,
 - rule-based alert generation,
 - ML classification of rule-derived risk labels.
 
@@ -27,6 +31,19 @@ Out of scope:
 
 ## Risk Rules
 
+### Score-Based Livability Status
+
+For the current Neusta binary score:
+
+| Score range | Status | Meaning |
+|---|---|---|
+| < 0.5 | `livable` | Formula/model considers the period livable |
+| >= 0.5 | `not_livable` | Formula/model considers the period not livable |
+
+This direction is based on observed data behavior: higher score values occur during warmer, less comfortable periods.
+
+### Humidex Heat-Risk Layer
+
 | Humidex range | Risk level | Meaning |
 |---|---|---|
 | < 30 | `livable` | Little or no discomfort |
@@ -38,6 +55,15 @@ Out of scope:
 ## Main Results
 
 F10-UC1 showed that Meteo France contains risk periods, while Neusta does not contain high-humidex risk periods after processing.
+
+Score-based F10-UC1 result:
+
+| Source | Livable | Not livable |
+|---|---:|---:|
+| Neusta actual score | 3,237 | 1,078 |
+| F9 predicted test score | 532 | 116 |
+
+Humidex heat-risk result:
 
 | Source | Livable | Discomfort | High risk | Dangerous |
 |---|---:|---:|---:|---:|
@@ -63,12 +89,14 @@ It reached macro F1 = 1.0000 on the rule-derived Meteo risk labels.
 
 ## Scientific Caution
 
+The score-based livability status depends on the meaning of `vivabilite_binary_mean`. The current interpretation should be confirmed with the project owner.
+
 The classifier is learning labels created from humidex thresholds. Therefore, the perfect classification result means the model reproduced the rule successfully. It does not prove independent real-world medical risk prediction.
 
 ## Suivi PM Actions
 
 | Task | Action |
 |---|---|
-| F10-UC1 | Détermination des plages vivables et dangereuses à partir des seuils d’humidex et génération des labels de risque. |
+| F10-UC1 | Détermination des plages vivables et non vivables à partir du score de vivabilité prédit, avec ajout d’une couche de risque thermique basée sur l’humidex. |
 | F10-UC3 | Mise en place d’un système d’alertes simulées basé sur des règles et des seuils d’humidex. |
 | F10-UC4 | Entraînement et comparaison de modèles de classification pour prédire les niveaux de risque définis par les règles. |

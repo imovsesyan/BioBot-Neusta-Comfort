@@ -1,6 +1,10 @@
 import pandas as pd
 
-from biobot.risk.rules import add_risk_labels, create_rule_alerts
+from biobot.risk.rules import (
+    add_livability_score_status,
+    add_risk_labels,
+    create_rule_alerts,
+)
 
 
 def test_add_risk_labels_assigns_ordered_humidex_bands():
@@ -28,3 +32,16 @@ def test_create_rule_alerts_ignores_livable_rows_and_marks_critical():
     assert alerts["alert_severity"].tolist() == ["info", "warning", "critical"]
     assert "livable" not in alerts["risk_level"].tolist()
 
+
+def test_add_livability_score_status_uses_current_neusta_direction():
+    df = pd.DataFrame({"vivabilite_binary_mean": [0.0, 0.49, 0.5, 1.0]})
+
+    result = add_livability_score_status(df)
+
+    assert result["livability_status"].tolist() == [
+        "livable",
+        "livable",
+        "not_livable",
+        "not_livable",
+    ]
+    assert result["is_livable_by_score"].tolist() == [True, True, False, False]
