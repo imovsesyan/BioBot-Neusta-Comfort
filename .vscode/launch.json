@@ -62,6 +62,36 @@
       "env": {
         "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib"
       }
+    },
+    {
+      "name": "Run F10-UC1 Risk Periods",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/f10_uc1_define_livable_dangerous_periods.py",
+      "console": "integratedTerminal",
+      "env": {
+        "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib"
+      }
+    },
+    {
+      "name": "Run F10-UC3 Rule Alerts",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/f10_uc3_generate_rule_alerts.py",
+      "console": "integratedTerminal",
+      "env": {
+        "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib"
+      }
+    },
+    {
+      "name": "Run F10-UC4 Risk Classifiers",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/f10_uc4_train_risk_classifier.py",
+      "console": "integratedTerminal",
+      "env": {
+        "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib"
+      }
     }
   ]
 }

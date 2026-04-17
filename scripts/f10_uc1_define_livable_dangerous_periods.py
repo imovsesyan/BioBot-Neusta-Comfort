@@ -1,0 +1,189 @@
+"""F10-UC1: Determine livable and dangerous periods from humidex thresholds.
+
+Run from the repository root:
+    python scripts/f10_uc1_define_livable_dangerous_periods.py
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from biobot.risk.rules import RISK_LEVEL_DETAILS, RISK_LEVEL_ORDER, add_risk_labels, risk_counts
+
+
+DEFAULT_METEO = ROOT / "data" / "processed" / "meteo_france_1h_clean.csv"
+DEFAULT_NEUSTA = ROOT / "data" / "processed" / "neusta_15min_clean.csv"
+DEFAULT_METEO_LABELS = ROOT / "data" / "processed" / "f10_meteo_risk_labels.csv"
+DEFAULT_NEUSTA_LABELS = ROOT / "data" / "processed" / "f10_neusta_risk_labels.csv"
+DEFAULT_SUMMARY = ROOT / "reports" / "tables" / "f10_uc1_livable_dangerous_summary.json"
+DEFAULT_EXAMPLES = ROOT / "reports" / "tables" / "f10_uc1_risk_period_examples.csv"
+DEFAULT_DISTRIBUTION_FIGURE = ROOT / "reports" / "figures" / "f10_uc1_risk_level_distribution.png"
+DEFAULT_TIMELINE_FIGURE = ROOT / "reports" / "figures" / "f10_uc1_high_risk_timeline.png"
+
+
+def load_and_label(path: Path) -> pd.DataFrame:
+    df = pd.read_csv(path, low_memory=False)
+    df["timestamp_utc"] = pd.to_datetime(df["timestamp_utc"], errors="coerce", utc=True)
+    df = add_risk_labels(df)
+    return df.dropna(subset=["timestamp_utc", "risk_level"]).sort_values("timestamp_utc")
+
+
+def summarize_source(df: pd.DataFrame, source: str, input_file: Path, output_file: Path) -> dict:
+    humidex = pd.to_numeric(df["humidex_c"], errors="coerce")
+    counts = risk_counts(df)
+    return {
+        "source": source,
+        "input_file": str(input_file),
+        "output_file": str(output_file),
+        "rows_with_risk_label": int(len(df)),
+        "date_min": df["timestamp_utc"].min().isoformat() if len(df) else None,
+        "date_max": df["timestamp_utc"].max().isoformat() if len(df) else None,
+        "humidex_min": float(humidex.min()) if len(humidex) else None,
+        "humidex_max": float(humidex.max()) if len(humidex) else None,
+        "risk_counts": counts,
+        "risk_percentages": {
+            level: float(100 * count / len(df)) if len(df) else 0.0
+            for level, count in counts.items()
+        },
+        "critical_humidex_rows": int(df["is_critical_humidex"].sum()),
+    }
+
+
+def save_distribution_figure(summaries: dict[str, dict], path: Path) -> None:
+    plot_rows = []
+    for source, summary in summaries.items():
+        for level in RISK_LEVEL_ORDER:
+            plot_rows.append(
+                {
+                    "source": source,
+                    "risk_level": level,
+                    "rows": summary["risk_counts"][level],
+                }
+            )
+    plot_df = pd.DataFrame(plot_rows)
+    pivot = plot_df.pivot(index="risk_level", columns="source", values="rows").reindex(
+        RISK_LEVEL_ORDER
+    )
+    ax = pivot.plot.bar(figsize=(9, 4.5), color=["#2f6f7e", "#d59635"])
+    ax.set_title("F10-UC1 risk-level distribution")
+    ax.set_xlabel("")
+    ax.set_ylabel("Rows")
+    ax.grid(axis="y", alpha=0.25)
+    plt.xticks(rotation=20, ha="right")
+    plt.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(path, dpi=160)
+    plt.close()
+
+
+def save_high_risk_timeline(meteo_df: pd.DataFrame, path: Path) -> None:
+    work = meteo_df[meteo_df["risk_level"].isin(["high_risk", "dangerous"])].copy()
+    work["month"] = work["timestamp_utc"].dt.tz_convert(None).dt.to_period("M").dt.to_timestamp()
+    timeline = (
+        work.groupby(["month", "risk_level"], observed=True)
+        .size()
+        .unstack(fill_value=0)
+        .reindex(columns=["high_risk", "dangerous"], fill_value=0)
+    )
+    ax = timeline.plot(figsize=(10, 4.5), color=["#d59635", "#b94040"], linewidth=2)
+    ax.set_title("F10-UC1 Meteo France high-risk and dangerous periods")
+    ax.set_xlabel("Month")
+    ax.set_ylabel("Rows")
+    ax.grid(alpha=0.25)
+    plt.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(path, dpi=160)
+    plt.close()
+
+
+def save_examples(meteo_df: pd.DataFrame, neusta_df: pd.DataFrame, path: Path) -> None:
+    columns = [
+        "source",
+        "timestamp_utc",
+        "station_id",
+        "station_name",
+        "temperature_c",
+        "relative_humidity_pct",
+        "humidex_c",
+        "risk_level",
+        "risk_score",
+        "risk_meaning",
+        "is_critical_humidex",
+    ]
+    meteo_examples = meteo_df[meteo_df["risk_level"].isin(["high_risk", "dangerous"])].copy()
+    meteo_examples["source"] = "meteo_france"
+    neusta_examples = neusta_df[neusta_df["risk_level"] != "livable"].copy()
+    neusta_examples["source"] = "neusta"
+    examples = pd.concat([meteo_examples, neusta_examples], ignore_index=True)
+    if examples.empty:
+        examples = pd.concat([meteo_df.head(20), neusta_df.head(20)], ignore_index=True)
+        examples["source"] = examples.get("source", "unknown")
+    examples = examples.sort_values("humidex_c", ascending=False).head(100)
+    for column in columns:
+        if column not in examples.columns:
+            examples[column] = None
+    path.parent.mkdir(parents=True, exist_ok=True)
+    examples[columns].to_csv(path, index=False)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Define F10 livable and dangerous periods.")
+    parser.add_argument("--meteo", type=Path, default=DEFAULT_METEO)
+    parser.add_argument("--neusta", type=Path, default=DEFAULT_NEUSTA)
+    parser.add_argument("--meteo-labels", type=Path, default=DEFAULT_METEO_LABELS)
+    parser.add_argument("--neusta-labels", type=Path, default=DEFAULT_NEUSTA_LABELS)
+    parser.add_argument("--summary", type=Path, default=DEFAULT_SUMMARY)
+    parser.add_argument("--examples", type=Path, default=DEFAULT_EXAMPLES)
+    parser.add_argument("--distribution-figure", type=Path, default=DEFAULT_DISTRIBUTION_FIGURE)
+    parser.add_argument("--timeline-figure", type=Path, default=DEFAULT_TIMELINE_FIGURE)
+    args = parser.parse_args()
+
+    meteo_df = load_and_label(args.meteo)
+    neusta_df = load_and_label(args.neusta)
+
+    args.meteo_labels.parent.mkdir(parents=True, exist_ok=True)
+    args.neusta_labels.parent.mkdir(parents=True, exist_ok=True)
+    meteo_df.to_csv(args.meteo_labels, index=False)
+    neusta_df.to_csv(args.neusta_labels, index=False)
+
+    summaries = {
+        "meteo_france": summarize_source(meteo_df, "meteo_france", args.meteo, args.meteo_labels),
+        "neusta": summarize_source(neusta_df, "neusta", args.neusta, args.neusta_labels),
+    }
+    summary = {
+        "task": "F10-UC1 livable and dangerous periods",
+        "risk_rules": RISK_LEVEL_DETAILS,
+        "sources": summaries,
+        "scope_note": "Current risk labels are humidex-rule labels, not independent medical or human-comfort annotations.",
+    }
+    args.summary.parent.mkdir(parents=True, exist_ok=True)
+    args.summary.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    save_examples(meteo_df, neusta_df, args.examples)
+    save_distribution_figure(summaries, args.distribution_figure)
+    save_high_risk_timeline(meteo_df, args.timeline_figure)
+
+    print(f"Wrote {args.meteo_labels}")
+    print(f"Wrote {args.neusta_labels}")
+    print(f"Wrote {args.summary}")
+    print(f"Wrote {args.examples}")
+    print(f"Wrote {args.distribution_figure}")
+    print(f"Wrote {args.timeline_figure}")
+    print("Meteo risk counts:", summaries["meteo_france"]["risk_counts"])
+    print("Neusta risk counts:", summaries["neusta"]["risk_counts"])
+
+
+if __name__ == "__main__":
+    main()

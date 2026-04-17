@@ -1,0 +1,74 @@
+{
+  "task": "F10-UC1 livable and dangerous periods",
+  "risk_rules": {
+    "livable": {
+      "risk_score": 0,
+      "humidex_range": "humidex < 30",
+      "meaning": "Little or no discomfort"
+    },
+    "discomfort": {
+      "risk_score": 1,
+      "humidex_range": "30 <= humidex < 40",
+      "meaning": "Some discomfort"
+    },
+    "high_risk": {
+      "risk_score": 2,
+      "humidex_range": "40 <= humidex <= 45",
+      "meaning": "Great discomfort; reduce exertion"
+    },
+    "dangerous": {
+      "risk_score": 3,
+      "humidex_range": "humidex > 45",
+      "meaning": "Dangerous heat stress conditions"
+    }
+  },
+  "sources": {
+    "meteo_france": {
+      "source": "meteo_france",
+      "input_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/meteo_france_1h_clean.csv",
+      "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/f10_meteo_risk_labels.csv",
+      "rows_with_risk_label": 452795,
+      "date_min": "2024-01-01T00:00:00+00:00",
+      "date_max": "2025-12-31T21:00:00+00:00",
+      "humidex_min": -19.99999999999997,
+      "humidex_max": 56.21302788757957,
+      "risk_counts": {
+        "livable": 355101,
+        "discomfort": 74067,
+        "high_risk": 22030,
+        "dangerous": 1597
+      },
+      "risk_percentages": {
+        "livable": 78.42423171633962,
+        "discomfort": 16.35773363221767,
+        "high_risk": 4.865336410516901,
+        "dangerous": 0.35269824092580526
+      },
+      "critical_humidex_rows": 3
+    },
+    "neusta": {
+      "source": "neusta",
+      "input_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/neusta_15min_clean.csv",
+      "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/f10_neusta_risk_labels.csv",
+      "rows_with_risk_label": 4451,
+      "date_min": "2024-01-09T23:00:00+00:00",
+      "date_max": "2024-12-11T00:45:00+00:00",
+      "humidex_min": 15.588477777777776,
+      "humidex_max": 28.89334444444444,
+      "risk_counts": {
+        "livable": 4451,
+        "discomfort": 0,
+        "high_risk": 0,
+        "dangerous": 0
+      },
+      "risk_percentages": {
+        "livable": 100.0,
+        "discomfort": 0.0,
+        "high_risk": 0.0,
+        "dangerous": 0.0
+      },
+      "critical_humidex_rows": 0
+    }
+  },
+  "scope_note": "Current risk labels are humidex-rule labels, not independent medical or human-comfort annotations."
+}

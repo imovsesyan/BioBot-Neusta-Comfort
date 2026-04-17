@@ -1,0 +1,21 @@
+{
+  "task": "F10-UC3 rule-based alerts",
+  "input_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/f10_meteo_risk_labels.csv",
+  "output_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/f10_meteo_rule_alerts.csv",
+  "total_input_rows": 452795,
+  "total_alerts": 97694,
+  "alert_severity_counts": {
+    "info": 74067,
+    "warning": 22030,
+    "danger": 1594,
+    "critical": 3
+  },
+  "alert_type_counts": {
+    "thermal_discomfort": 74067,
+    "heat_stress_warning": 22030,
+    "dangerous_heat_alert": 1594,
+    "critical_heat_alert": 3
+  },
+  "critical_alerts": 3,
+  "scope_note": "Alerts are simulated rule-based events. They are not connected to a production notification system yet."
+}

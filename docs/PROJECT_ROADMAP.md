@@ -46,15 +46,15 @@ docs/f9/F9_ENSEMBLE_MODELING.md
 
 ## Phase F10: Risk Detection
 
-F10 should use explainable rules before ML alerts.
+F10 uses explainable humidex rules before ML classification.
 
-Recommended order:
+| Use case | Status | Objective | Output |
+|---|---|---|---|
+| F10-UC1 Livable and dangerous periods | Complete | Define humidex-based risk periods | `reports/tables/f10_uc1_livable_dangerous_summary.json` |
+| F10-UC3 Rule-based alerts | Complete | Generate simulated alerts from thresholds | `reports/tables/f10_uc3_rule_alert_summary.json` |
+| F10-UC4 Risk classification | Complete | Train ML classifiers to reproduce rule-derived risk levels | `reports/tables/f10_uc4_risk_classifier_results.json` |
 
-1. Define comfort and danger thresholds.
-2. Create low, medium, high risk labels.
-3. Build rule-based alert examples.
-4. Validate labels with plots and examples.
-5. Train ML risk classification only if labels are reliable.
+Important limitation: F10-UC4 currently classifies rule-derived labels, not independent real-world medical incident labels.
 
 ## Documentation Standard
 
@@ -71,9 +71,9 @@ Every task should include:
 
 ## Immediate Next Step
 
-The immediate next F9 improvements are:
+The immediate next improvements are:
 
 - verify how Neusta `vivabilite_binary_mean` was created,
 - rerun F9-UC7 without humidex features to test target leakage risk,
 - define a future-horizon target, for example livability 15 or 60 minutes ahead,
-- prepare F10 risk labels from humidex and environmental thresholds.
+- add non-humidex risk rules only when their thresholds are scientifically justified.

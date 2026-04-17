@@ -63,6 +63,9 @@ MPLCONFIGDIR=.cache/matplotlib python scripts/f8_uc4_make_quality_figures.py
 MPLCONFIGDIR=.cache/matplotlib python scripts/f9_uc6_humidex_threshold_analysis.py
 MPLCONFIGDIR=.cache/matplotlib python scripts/f9_uc7_test_livability_models.py
 MPLCONFIGDIR=.cache/matplotlib python scripts/f9_compare_ml_dl_models.py
+MPLCONFIGDIR=.cache/matplotlib python scripts/f10_uc1_define_livable_dangerous_periods.py
+MPLCONFIGDIR=.cache/matplotlib python scripts/f10_uc3_generate_rule_alerts.py
+MPLCONFIGDIR=.cache/matplotlib python scripts/f10_uc4_train_risk_classifier.py
 ```
 
 For the optional F9-UC8 CNN-LSTM experiment, install the advanced dependencies first:
@@ -72,7 +75,7 @@ python -m pip install -r requirements-advanced.txt
 python scripts/f9_uc8_train_sequence_model.py --model cnn_lstm --epochs 8
 ```
 
-You can also use the Run and Debug panel. This repository includes VS Code launch buttons for F8-UC3, F8-UC4, F9-UC6, F9-UC7, F9 ML vs DL comparison, and the optional F9-UC8 CNN-LSTM experiment.
+You can also use the Run and Debug panel. This repository includes VS Code launch buttons for F8-UC3, F8-UC4, F9-UC6, F9-UC7, F9 ML vs DL comparison, the optional F9-UC8 CNN-LSTM experiment, and the F10 risk-detection scripts.
 
 ## XGBoost on macOS
 

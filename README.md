@@ -2,13 +2,14 @@
 
 Clean data-science rebuild for the BioBot / Neusta internship project.
 
-The project prepares environmental sensor datasets for comfort, livability, and risk prediction. The current validated scope includes **F8-UC3**, **F8-UC4**, and an initial **F9 livability-score prediction baseline**:
+The project prepares environmental sensor datasets for comfort, livability, and risk prediction. The current validated scope includes **F8-UC3**, **F8-UC4**, **F9 livability-score prediction**, and initial **F10 risk detection**:
 
 - **F8-UC3:** convert raw datasets into standardized CSV files.
 - **F8-UC4:** clean, impute, normalize, and aggregate the standardized data.
 - **F9:** define the livability prediction problem, compare model families, analyze humidex thresholds, and test baseline prediction models.
+- **F10:** define humidex risk periods, generate rule-based alerts, and test ML risk classification.
 
-Recommendation systems, alert generation, and model interpretation are intentionally postponed.
+Recommendation systems, production notification delivery, and model interpretation are intentionally postponed.
 
 ## Project Goals
 
@@ -28,7 +29,7 @@ The pipeline should eventually support:
 
 ## Current Repository Status
 
-This clean repo contains the validated F8 data-preparation work and the first F9 livability-score prediction workflow.
+This clean repo contains the validated F8 data-preparation work, the first F9 livability-score prediction workflow, and the initial F10 risk-detection workflow.
 
 | Area | Status |
 |---|---|
@@ -36,7 +37,7 @@ This clean repo contains the validated F8 data-preparation work and the first F9
 | F8-UC3 standardized CSV conversion | Complete |
 | F8-UC4 cleaning, imputation, normalization, aggregation | Complete |
 | F9 machine learning | Initial livability prediction complete |
-| F10 risk detection and alerts | Not started |
+| F10 risk detection and alerts | Initial rule and ML workflow complete |
 
 ## Repository Structure
 
@@ -52,6 +53,7 @@ BioBot-Neusta-Comfort/
   docs/
     f8/                   # F8 documentation and manager summary
     f9/                   # F9 prediction documentation and manager summary
+    f10/                  # F10 risk detection documentation
     GITHUB_SETUP.md
     PROJECT_ROADMAP.md
     VSCODE_SETUP.md
@@ -64,6 +66,7 @@ BioBot-Neusta-Comfort/
     biobot/
       data/               # data processing package
       modeling/           # F9 feature preparation and metrics
+      risk/               # F10 risk rules and alert helpers
   tests/                  # lightweight validation tests
 ```
 
@@ -165,6 +168,26 @@ python -m pip install -r requirements-advanced.txt
 python scripts/f9_uc8_train_sequence_model.py --model cnn_lstm --epochs 8
 ```
 
+## Run F10 Risk Detection
+
+Define livable, discomfort, high-risk, and dangerous periods:
+
+```bash
+MPLCONFIGDIR=.cache/matplotlib python scripts/f10_uc1_define_livable_dangerous_periods.py
+```
+
+Generate rule-based alerts from the risk labels:
+
+```bash
+MPLCONFIGDIR=.cache/matplotlib python scripts/f10_uc3_generate_rule_alerts.py
+```
+
+Train ML classifiers for the rule-derived risk labels:
+
+```bash
+MPLCONFIGDIR=.cache/matplotlib python scripts/f10_uc4_train_risk_classifier.py
+```
+
 ## Verified Results
 
 F8-UC3 standardized:
@@ -198,6 +221,14 @@ F9-UC7 livability prediction:
 | CNN-LSTM | 0.3000 | 0.4174 | -0.1879 |
 | Mean Baseline | 0.3450 | 0.3887 | -0.0503 |
 
+F10 risk detection:
+
+| Task | Main result |
+|---|---|
+| F10-UC1 | Meteo France has 355,101 livable rows, 74,067 discomfort rows, 22,030 high-risk rows, and 1,597 dangerous rows. Neusta is 100% livable by humidex. |
+| F10-UC3 | 97,694 simulated rule-based alerts generated from Meteo France, including 3 critical humidex alerts. |
+| F10-UC4 | Random Forest classifier reached macro F1 1.0000 on rule-derived risk labels. |
+
 ## Key Scientific Decisions
 
 - Datasets are kept separate during F8. They are not merged until location and timestamp alignment are justified.
@@ -206,6 +237,7 @@ F9-UC7 livability prediction:
 - Normalized columns are added for future baseline ML models, but raw cleaned values are preserved.
 - The first F9 target is Neusta `vivabilite_binary_mean`.
 - Very high tree-model scores are treated as a scientific warning: the target may be formula-derived from environmental variables, so the current model is best described as reproducing the Neusta score, not yet proving perceived human comfort.
+- F10 risk labels are humidex-rule labels. The ML classifier reproduces those rules and should not be interpreted as independent medical risk prediction.
 
 ## Documentation
 
@@ -224,12 +256,16 @@ F9-UC7 livability prediction:
 - [F9 Advanced Models](docs/f9/F9_UC8_advanced_models.md)
 - [F9 ML vs Deep Learning Comparison](docs/f9/F9_ML_VS_DL_COMPARISON.md)
 - [F9 Ensemble Modeling](docs/f9/F9_ENSEMBLE_MODELING.md)
+- [F10 Manager Summary](docs/f10/F10_MANAGER_SUMMARY.md)
+- [F10 Livable and Dangerous Periods](docs/f10/F10_UC1_livable_dangerous_periods.md)
+- [F10 Rule-Based Alerts](docs/f10/F10_UC3_rule_based_alerts.md)
+- [F10 Risk Classification](docs/f10/F10_UC4_risk_classification.md)
 
 ## Next Recommended Step
 
-Before moving into F10 alerts or recommendation systems:
+Before moving into recommendations or production alerts:
 
 - validate the meaning of Neusta `vivabilite_binary_mean`,
 - run an ablation test without `humidex_c`,
 - test next-step prediction, for example predicting livability 15 or 60 minutes ahead,
-- define F10 risk labels from humidex and environmental thresholds.
+- add non-humidex risk factors if validated thresholds are available.

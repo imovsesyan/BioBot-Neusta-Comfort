@@ -1,0 +1,285 @@
+{
+  "task": "F10-UC4 ML-based risk classification",
+  "input_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/f10_meteo_risk_labels.csv",
+  "prediction_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/f10_risk_classifier_test_predictions.csv",
+  "prediction_examples_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/reports/tables/f10_uc4_risk_classifier_prediction_examples.csv",
+  "target": "risk_level",
+  "target_source": "Rule-derived humidex risk labels from F10-UC1.",
+  "feature_columns": [
+    "temperature_c",
+    "dew_point_c",
+    "relative_humidity_pct",
+    "wind_speed_mps",
+    "pressure_pa",
+    "rain_1h_mm",
+    "humidex_c",
+    "hour_sin",
+    "hour_cos",
+    "month_sin",
+    "month_cos"
+  ],
+  "class_order": [
+    "livable",
+    "discomfort",
+    "high_risk",
+    "dangerous"
+  ],
+  "class_counts": {
+    "livable": 355101,
+    "discomfort": 74067,
+    "high_risk": 22030,
+    "dangerous": 1597
+  },
+  "split": {
+    "method": "chronological",
+    "train_rows_original": 316956,
+    "train_rows_used": 160000,
+    "validation_rows": 67919,
+    "test_rows": 67920
+  },
+  "best_model_by_macro_f1": "random_forest_classifier",
+  "results": [
+    {
+      "model": "most_frequent_baseline",
+      "accuracy": 0.8571260306242638,
+      "balanced_accuracy": 0.25,
+      "macro_f1": 0.230766791399759,
+      "weighted_f1": 0.7911848956494918,
+      "classification_report": {
+        "livable": {
+          "precision": 0.8571260306242638,
+          "recall": 1.0,
+          "f1-score": 0.923067165599036,
+          "support": 58216.0
+        },
+        "discomfort": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 7983.0
+        },
+        "high_risk": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1643.0
+        },
+        "dangerous": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 78.0
+        },
+        "accuracy": 0.8571260306242638,
+        "macro avg": {
+          "precision": 0.21428150765606596,
+          "recall": 0.25,
+          "f1-score": 0.230766791399759,
+          "support": 67920.0
+        },
+        "weighted avg": {
+          "precision": 0.7346650323737065,
+          "recall": 0.8571260306242638,
+          "f1-score": 0.7911848956494918,
+          "support": 67920.0
+        }
+      },
+      "validation_macro_f1": 0.23069602937328015,
+      "validation_balanced_accuracy": 0.25
+    },
+    {
+      "model": "logistic_regression_balanced",
+      "accuracy": 0.9950382803297998,
+      "balanced_accuracy": 0.9884721975698505,
+      "macro_f1": 0.9458277670533832,
+      "weighted_f1": 0.9951199236167265,
+      "classification_report": {
+        "livable": {
+          "precision": 0.9998967404398857,
+          "recall": 0.9980074206403737,
+          "f1-score": 0.9989511872216777,
+          "support": 58216.0
+        },
+        "discomfort": {
+          "precision": 0.9840949255238576,
+          "recall": 0.9765752223474884,
+          "f1-score": 0.980320653882427,
+          "support": 7983.0
+        },
+        "high_risk": {
+          "precision": 0.8988826815642458,
+          "recall": 0.9793061472915399,
+          "f1-score": 0.9373725604427614,
+          "support": 1643.0
+        },
+        "dangerous": {
+          "precision": 0.7647058823529411,
+          "recall": 1.0,
+          "f1-score": 0.8666666666666667,
+          "support": 78.0
+        },
+        "accuracy": 0.9950382803297998,
+        "macro avg": {
+          "precision": 0.9118950574702326,
+          "recall": 0.9884721975698505,
+          "f1-score": 0.9458277670533832,
+          "support": 67920.0
+        },
+        "weighted avg": {
+          "precision": 0.99532582062042,
+          "recall": 0.9950382803297998,
+          "f1-score": 0.9951199236167265,
+          "support": 67920.0
+        }
+      },
+      "validation_macro_f1": 0.9427915775127165,
+      "validation_balanced_accuracy": 0.9890417585107297
+    },
+    {
+      "model": "random_forest_classifier",
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "macro_f1": 1.0,
+      "weighted_f1": 1.0,
+      "classification_report": {
+        "livable": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 58216.0
+        },
+        "discomfort": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 7983.0
+        },
+        "high_risk": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1643.0
+        },
+        "dangerous": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 78.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 67920.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 67920.0
+        }
+      },
+      "validation_macro_f1": 1.0,
+      "validation_balanced_accuracy": 1.0
+    },
+    {
+      "model": "hist_gradient_boosting_classifier",
+      "accuracy": 0.9996613663133098,
+      "balanced_accuracy": 0.9861694074729643,
+      "macro_f1": 0.9859350129914652,
+      "weighted_f1": 0.9996614579916456,
+      "classification_report": {
+        "livable": {
+          "precision": 0.9999484642341785,
+          "recall": 0.9998797581420915,
+          "f1-score": 0.9999141100079019,
+          "support": 58216.0
+        },
+        "discomfort": {
+          "precision": 0.998997995991984,
+          "recall": 0.999123136665414,
+          "f1-score": 0.9990605624099705,
+          "support": 7983.0
+        },
+        "high_risk": {
+          "precision": 0.9951397326852977,
+          "recall": 0.996956786366403,
+          "f1-score": 0.9960474308300395,
+          "support": 1643.0
+        },
+        "dangerous": {
+          "precision": 0.9487179487179487,
+          "recall": 0.9487179487179487,
+          "f1-score": 0.9487179487179487,
+          "support": 78.0
+        },
+        "accuracy": 0.9996613663133098,
+        "macro avg": {
+          "precision": 0.9857010354073523,
+          "recall": 0.9861694074729643,
+          "f1-score": 0.9859350129914652,
+          "support": 67920.0
+        },
+        "weighted avg": {
+          "precision": 0.9996615927070508,
+          "recall": 0.9996613663133098,
+          "f1-score": 0.9996614579916456,
+          "support": 67920.0
+        }
+      },
+      "validation_macro_f1": 0.9915042610519971,
+      "validation_balanced_accuracy": 0.9845020169235946
+    },
+    {
+      "model": "xgboost_classifier",
+      "accuracy": 0.9997644287396937,
+      "balanced_accuracy": 0.9835090328160412,
+      "macro_f1": 0.9890561154911288,
+      "weighted_f1": 0.9997634892756905,
+      "classification_report": {
+        "livable": {
+          "precision": 0.9999312950875988,
+          "recall": 1.0,
+          "f1-score": 0.9999656463636676,
+          "support": 58216.0
+        },
+        "discomfort": {
+          "precision": 1.0,
+          "recall": 0.9987473380934486,
+          "f1-score": 0.9993732765104036,
+          "support": 7983.0
+        },
+        "high_risk": {
+          "precision": 0.9933454325468845,
+          "recall": 0.9993913572732805,
+          "f1-score": 0.9963592233009708,
+          "support": 1643.0
+        },
+        "dangerous": {
+          "precision": 0.9864864864864865,
+          "recall": 0.9358974358974359,
+          "f1-score": 0.9605263157894737,
+          "support": 78.0
+        },
+        "accuracy": 0.9997644287396937,
+        "macro avg": {
+          "precision": 0.9949408035302424,
+          "recall": 0.9835090328160412,
+          "f1-score": 0.9890561154911288,
+          "support": 67920.0
+        },
+        "weighted avg": {
+          "precision": 0.9997646167025931,
+          "recall": 0.9997644287396937,
+          "f1-score": 0.9997634892756905,
+          "support": 67920.0
+        }
+      },
+      "validation_macro_f1": 0.9862906340779367,
+      "validation_balanced_accuracy": 0.9753268439889227
+    }
+  ],
+  "skipped_models": [],
+  "scope_note": "This is classification of rule-derived risk labels, not independent real-world incident labels."
+}

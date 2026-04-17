@@ -1,0 +1,101 @@
+source,timestamp_utc,station_id,station_name,temperature_c,relative_humidity_pct,humidex_c,risk_level,risk_score,risk_meaning,is_critical_humidex
+meteo_france,2024-08-18 18:00:00+00:00,78894.0,ST-BARTHELEMY METEO,33.0,100.0,56.21302788757957,dangerous,3,Dangerous heat stress conditions,True
+meteo_france,2024-09-28 15:00:00+00:00,78890.0,LA DESIRADE METEO,32.5,100.0,54.89216684346607,dangerous,3,Dangerous heat stress conditions,True
+meteo_france,2024-08-18 15:00:00+00:00,78894.0,ST-BARTHELEMY METEO,32.200000000000045,100.0,54.109686266846296,dangerous,3,Dangerous heat stress conditions,True
+meteo_france,2024-08-18 12:00:00+00:00,78894.0,ST-BARTHELEMY METEO,29.700000000000045,99.94444444444444,53.61189952082712,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-19 15:00:00+00:00,78894.0,ST-BARTHELEMY METEO,31.90000000000003,100.0,53.33461075637004,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-19 18:00:00+00:00,78894.0,ST-BARTHELEMY METEO,32.0,99.97203274215552,53.32278988875796,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-19 21:00:00+00:00,78894.0,ST-BARTHELEMY METEO,31.90000000000003,99.94406548431104,53.31096902114589,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-20 03:00:00+00:00,78894.0,ST-BARTHELEMY METEO,28.90000000000003,99.94406548431104,53.31096902114589,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-20 00:00:00+00:00,78894.0,ST-BARTHELEMY METEO,29.30000000000001,99.94406548431104,53.31096902114589,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-18 06:00:00+00:00,78894.0,ST-BARTHELEMY METEO,28.30000000000001,99.88888888888889,53.11411277480793,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-18 09:00:00+00:00,78894.0,ST-BARTHELEMY METEO,28.0,99.88888888888889,53.11411277480793,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-18 03:00:00+00:00,78894.0,ST-BARTHELEMY METEO,28.80000000000001,99.88888888888889,53.11411277480793,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-18 21:00:00+00:00,78894.0,ST-BARTHELEMY METEO,31.80000000000001,100.0,53.07788076522124,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-01-11 09:00:00+00:00,61970.0,JUAN DE NOVA,36.5,63.0,52.77651538556594,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-01-12 12:00:00+00:00,61970.0,JUAN DE NOVA,34.60000000000002,74.0,52.21311556456499,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-08 12:00:00+00:00,61970.0,JUAN DE NOVA,34.900000000000034,71.0,51.96999462841011,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-19 12:00:00+00:00,78894.0,ST-BARTHELEMY METEO,30.200000000000045,100.0,51.90862928919961,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-08 09:00:00+00:00,61970.0,JUAN DE NOVA,34.80000000000001,71.0,51.73599470816171,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-01-11 12:00:00+00:00,61970.0,JUAN DE NOVA,34.60000000000002,71.0,51.27010855506797,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-01-12 09:00:00+00:00,61970.0,JUAN DE NOVA,34.60000000000002,70.0,50.876515385565966,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-25 12:00:00+00:00,61970.0,JUAN DE NOVA,35.700000000000045,62.0,50.70888971202204,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-01-10 12:00:00+00:00,61970.0,JUAN DE NOVA,35.60000000000002,62.0,50.485800047822565,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-19 09:00:00+00:00,78894.0,ST-BARTHELEMY METEO,28.600000000000023,100.0,50.48264782202918,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-07 12:00:00+00:00,61970.0,JUAN DE NOVA,34.400000000000034,70.0,50.41757347444185,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-14 09:00:00+00:00,61970.0,JUAN DE NOVA,35.10000000000002,65.0,50.35704779439009,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-21 09:00:00+00:00,61970.0,JUAN DE NOVA,34.60000000000002,68.0,50.23427779458504,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-07 09:00:00+00:00,61970.0,JUAN DE NOVA,34.400000000000034,69.0,50.161364909198774,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-02-03 09:00:00+00:00,61970.0,JUAN DE NOVA,33.700000000000045,74.0,50.10701922773498,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-12-03 15:00:00+00:00,81401.0,SAINT LAURENT,32.60000000000002,82.0,49.940124331948546,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-09-24 18:00:00+00:00,78894.0,ST-BARTHELEMY METEO,35.80000000000001,91.9174624829468,49.91838001647968,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-09-24 12:00:00+00:00,78894.0,ST-BARTHELEMY METEO,31.40000000000003,91.9174624829468,49.91838001647968,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-09-24 15:00:00+00:00,78894.0,ST-BARTHELEMY METEO,34.200000000000045,91.9174624829468,49.91838001647968,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-01-11 06:00:00+00:00,61970.0,JUAN DE NOVA,33.900000000000034,72.0,49.91757347444185,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-09-24 21:00:00+00:00,78894.0,ST-BARTHELEMY METEO,31.600000000000023,91.88949522510232,49.9065591488676,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-01-12 15:00:00+00:00,61970.0,JUAN DE NOVA,32.700000000000045,81.0,49.904703420517926,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-01-11 15:00:00+00:00,61970.0,JUAN DE NOVA,33.200000000000045,77.0,49.87010855506799,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-01-12 06:00:00+00:00,61970.0,JUAN DE NOVA,32.80000000000001,80.0,49.86999462841009,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-11-24 15:00:00+00:00,78890.0,LA DESIRADE METEO,30.5,100.0,49.81263788951925,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-11-29 12:00:00+00:00,61970.0,JUAN DE NOVA,34.400000000000034,67.0,49.53263794277956,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-04-01 09:00:00+00:00,61970.0,JUAN DE NOVA,31.0,94.0,49.4495217166681,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-28 12:00:00+00:00,61970.0,JUAN DE NOVA,33.900000000000034,70.0,49.40786463641345,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-10-23 15:00:00+00:00,78890.0,LA DESIRADE METEO,31.5,89.0,49.388994554209546,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-01-10 09:00:00+00:00,61970.0,JUAN DE NOVA,35.10000000000002,62.0,49.38012414681603,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-12-04 18:00:00+00:00,81401.0,SAINT LAURENT,32.80000000000001,78.0,49.33821588886522,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-09-29 18:00:00+00:00,81401.0,SAINT LAURENT,36.200000000000045,55.0,49.31644186761207,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-03-28 18:00:00+00:00,81401.0,SAINT LAURENT,36.5,53.0,49.27938880923334,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-06 12:00:00+00:00,61970.0,JUAN DE NOVA,33.700000000000045,71.0,49.20786463641346,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-02-18 12:00:00+00:00,61970.0,JUAN DE NOVA,33.700000000000045,71.0,49.20786463641346,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-03-16 09:00:00+00:00,61970.0,JUAN DE NOVA,33.80000000000001,70.0,49.18212233295427,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-09-25 18:00:00+00:00,81401.0,SAINT LAURENT,35.60000000000002,58.0,49.1744173177833,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-02-03 12:00:00+00:00,61970.0,JUAN DE NOVA,34.400000000000034,66.0,49.16336590765632,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-12-05 18:00:00+00:00,81401.0,SAINT LAURENT,33.400000000000034,73.0,49.161364909198774,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-18 09:00:00+00:00,61970.0,JUAN DE NOVA,35.400000000000034,59.0,49.09046099212243,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-10 12:00:00+00:00,61970.0,JUAN DE NOVA,34.200000000000045,67.0,49.08580004782259,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-08-19 06:00:00+00:00,78894.0,ST-BARTHELEMY METEO,28.600000000000023,100.0,49.05666635485874,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-01 09:00:00+00:00,61976.0,TROMELIN,33.900000000000034,69.0,49.03263794277956,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-10-30 00:00:00+00:00,91570.0,SURPRISE,35.10000000000002,61.0,49.02442848285081,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-19 09:00:00+00:00,61970.0,JUAN DE NOVA,35.10000000000002,61.0,49.02442848285081,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-26 09:00:00+00:00,61970.0,JUAN DE NOVA,35.900000000000034,56.0,49.01644186761206,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-10-09 12:00:00+00:00,78890.0,LA DESIRADE METEO,30.40000000000003,98.0,48.99149989250295,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-10-27 03:00:00+00:00,91570.0,SURPRISE,36.200000000000045,54.0,48.979388809233384,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-14 06:00:00+00:00,61970.0,JUAN DE NOVA,34.30000000000001,66.0,48.94158426073353,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-02-12 09:00:00+00:00,61970.0,JUAN DE NOVA,33.30000000000001,73.0,48.93427779458503,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-11-03 12:00:00+00:00,61970.0,JUAN DE NOVA,35.0,61.0,48.924428482850786,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-10-24 15:00:00+00:00,78890.0,LA DESIRADE METEO,31.0,92.0,48.888994554209546,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-02-11 12:00:00+00:00,61970.0,JUAN DE NOVA,34.10000000000002,67.0,48.86336590765631,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-10-28 12:00:00+00:00,78890.0,LA DESIRADE METEO,30.100000000000023,100.0,48.83422334919299,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-01-17 09:00:00+00:00,61970.0,JUAN DE NOVA,33.80000000000001,69.0,48.80888971202201,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-28 09:00:00+00:00,61970.0,JUAN DE NOVA,33.80000000000001,69.0,48.80888971202201,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-01-04 06:00:00+00:00,61976.0,TROMELIN,33.900000000000034,68.0,48.785800047822576,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-21 12:00:00+00:00,61970.0,JUAN DE NOVA,33.60000000000002,70.0,48.73263794277955,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-06 09:00:00+00:00,61970.0,JUAN DE NOVA,33.60000000000002,70.0,48.73263794277955,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-25 09:00:00+00:00,61970.0,JUAN DE NOVA,34.80000000000001,62.0,48.7244284828508,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-04-03 09:00:00+00:00,61970.0,JUAN DE NOVA,34.200000000000045,66.0,48.72045208796445,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-02-26 12:00:00+00:00,61970.0,JUAN DE NOVA,34.900000000000034,61.0,48.70713040489551,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-18 12:00:00+00:00,61970.0,JUAN DE NOVA,35.0,60.0,48.57441731778328,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-01-06 09:00:00+00:00,61976.0,TROMELIN,33.80000000000001,68.0,48.5633659076563,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-10-29 00:00:00+00:00,91570.0,SURPRISE,35.30000000000001,58.0,48.530011628480985,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-10-01 18:00:00+00:00,81401.0,SAINT LAURENT,36.5,51.0,48.51389632132364,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-04-08 09:00:00+00:00,67005.0,PAMANDZI,33.5,70.0,48.508889712022,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-12-04 15:00:00+00:00,81401.0,SAINT LAURENT,31.700000000000045,84.0,48.50270042465236,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-01-03 09:00:00+00:00,61976.0,TROMELIN,34.10000000000002,66.0,48.49996638192364,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-27 12:00:00+00:00,61970.0,JUAN DE NOVA,34.80000000000001,61.0,48.49046099212241,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-09-22 15:00:00+00:00,78925.0,LAMENTIN-AERO,33.10000000000002,73.0,48.48212233295428,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-01-04 09:00:00+00:00,61976.0,TROMELIN,34.200000000000045,65.0,48.48012414681605,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-10-08 18:00:00+00:00,78890.0,LA DESIRADE METEO,31.0,90.0,48.476260622544785,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-10-28 03:00:00+00:00,91570.0,SURPRISE,36.10000000000002,53.0,48.438409915920666,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-07 06:00:00+00:00,61970.0,JUAN DE NOVA,32.400000000000034,78.0,48.41757347444185,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-11-24 12:00:00+00:00,61970.0,JUAN DE NOVA,35.400000000000034,57.0,48.40348338154709,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-02-09 12:00:00+00:00,61970.0,JUAN DE NOVA,33.60000000000002,69.0,48.36336590765631,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-19 12:00:00+00:00,67005.0,PAMANDZI,33.60000000000002,69.0,48.36336590765631,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-04-18 09:00:00+00:00,61970.0,JUAN DE NOVA,33.60000000000002,69.0,48.36336590765631,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-31 12:00:00+00:00,61970.0,JUAN DE NOVA,33.60000000000002,69.0,48.36336590765631,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-02-18 12:00:00+00:00,61970.0,JUAN DE NOVA,34.900000000000034,60.0,48.35899646651667,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-10-08 12:00:00+00:00,78890.0,LA DESIRADE METEO,29.90000000000003,100.0,48.349521716668136,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-10-24 12:00:00+00:00,78890.0,LA DESIRADE METEO,29.90000000000003,100.0,48.349521716668136,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-03-20 09:00:00+00:00,61970.0,JUAN DE NOVA,33.700000000000045,68.0,48.34158426073356,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-03-16 12:00:00+00:00,61970.0,JUAN DE NOVA,33.700000000000045,68.0,48.34158426073356,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2024-12-28 09:00:00+00:00,61970.0,JUAN DE NOVA,33.30000000000001,71.0,48.30888971202201,dangerous,3,Dangerous heat stress conditions,False
+meteo_france,2025-01-12 12:00:00+00:00,61972.0,EUROPA,34.0,66.0,48.28012414681601,dangerous,3,Dangerous heat stress conditions,False

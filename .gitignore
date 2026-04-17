@@ -13,6 +13,9 @@ data/raw/*
 data/interim/*.csv
 data/processed/*.csv
 
+# Large generated report tables
+reports/tables/f10_uc4_risk_classifier_test_predictions.csv
+
 # Keep folder structure
 !data/raw/.gitkeep
 !data/interim/.gitkeep
@@ -27,4 +30,3 @@ models/
 
 # Notebook checkpoints
 .ipynb_checkpoints/
-
