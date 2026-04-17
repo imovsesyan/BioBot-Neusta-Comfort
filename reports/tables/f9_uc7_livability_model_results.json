@@ -1,0 +1,100 @@
+{
+  "task": "F9-UC7 livability score prediction",
+  "target": "vivabilite_binary_mean",
+  "target_scale": "0..1 interval livability score from Neusta aggregated labels",
+  "input_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/neusta_15min_clean.csv",
+  "n_rows_with_target": 4315,
+  "n_features": 36,
+  "feature_columns": [
+    "temperature_c",
+    "relative_humidity_pct",
+    "humidex_c",
+    "record_count",
+    "temperature_c_norm",
+    "relative_humidity_pct_norm",
+    "temperature_secondary_c_norm",
+    "humidity_secondary_pct_norm",
+    "humidex_c_norm",
+    "hour_sin",
+    "hour_cos",
+    "dayofweek_sin",
+    "dayofweek_cos",
+    "month_sin",
+    "month_cos",
+    "temperature_c_lag_1",
+    "temperature_c_lag_4",
+    "temperature_c_lag_16",
+    "temperature_c_rolling_mean_4",
+    "temperature_c_rolling_std_4",
+    "temperature_c_rolling_mean_16",
+    "temperature_c_rolling_std_16",
+    "relative_humidity_pct_lag_1",
+    "relative_humidity_pct_lag_4",
+    "relative_humidity_pct_lag_16",
+    "relative_humidity_pct_rolling_mean_4",
+    "relative_humidity_pct_rolling_std_4",
+    "relative_humidity_pct_rolling_mean_16",
+    "relative_humidity_pct_rolling_std_16",
+    "humidex_c_lag_1",
+    "humidex_c_lag_4",
+    "humidex_c_lag_16",
+    "humidex_c_rolling_mean_4",
+    "humidex_c_rolling_std_4",
+    "humidex_c_rolling_mean_16",
+    "humidex_c_rolling_std_16"
+  ],
+  "dropped_features": {
+    "reason": "No non-missing values in the training split.",
+    "columns": [
+      "pm10_ugm3_norm",
+      "pm1_ugm3_norm",
+      "pm25_ugm3_norm"
+    ]
+  },
+  "split": {
+    "method": "chronological",
+    "train_rows": 3020,
+    "validation_rows": 647,
+    "test_rows": 648
+  },
+  "best_model_by_test_mae": "random_forest",
+  "results": [
+    {
+      "model": "mean_baseline",
+      "validation_mae": 0.3784436403710793,
+      "validation_rmse": 0.42962748714141674,
+      "validation_r2": -0.0009292048601301506,
+      "test_mae": 0.3449590211657908,
+      "test_rmse": 0.3886810830029215,
+      "test_r2": -0.05032792516063345
+    },
+    {
+      "model": "ridge_regression",
+      "validation_mae": 0.16378568398587956,
+      "validation_rmse": 0.2321083872881106,
+      "validation_r2": 0.7078533500048041,
+      "test_mae": 0.17534760582952755,
+      "test_rmse": 0.24730614403654536,
+      "test_r2": 0.5747856465725936
+    },
+    {
+      "model": "random_forest",
+      "validation_mae": 0.0025677887994818315,
+      "validation_rmse": 0.01997323297220551,
+      "validation_r2": 0.9978367038467096,
+      "test_mae": 0.0032853384036477576,
+      "test_rmse": 0.021791377266302998,
+      "test_r2": 0.9966985291806002
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "validation_mae": 0.0033420719997665615,
+      "validation_rmse": 0.01924088091841712,
+      "validation_r2": 0.9979924371702965,
+      "test_mae": 0.003322186050282937,
+      "test_rmse": 0.01880726878895436,
+      "test_r2": 0.9975408242543489
+    }
+  ],
+  "scope_note": "Recommendation systems and model interpretation are intentionally out of scope for this F9 run."
+}

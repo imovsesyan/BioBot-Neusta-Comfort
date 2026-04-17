@@ -1,0 +1,18 @@
+{
+  "task": "F9-UC8 advanced sequence livability prediction",
+  "model": "cnn_lstm",
+  "target": "vivabilite_binary_mean",
+  "window_size": 16,
+  "epochs_requested": 8,
+  "epochs_completed": 8,
+  "n_features": 36,
+  "train_sequences": 3004,
+  "validation_sequences": 631,
+  "test_sequences": 632,
+  "test_metrics": {
+    "mae": 0.30003470182418823,
+    "rmse": 0.4173707159678776,
+    "r2": -0.187933087348938
+  },
+  "scope_note": "Recommendation systems and model interpretation are intentionally out of scope."
+}

@@ -1,0 +1,4 @@
+# Optional dependencies for F9-UC8 advanced sequence models.
+-r requirements.txt
+tensorflow>=2.15
+

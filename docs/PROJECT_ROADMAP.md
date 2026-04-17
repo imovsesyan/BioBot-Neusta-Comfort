@@ -4,7 +4,7 @@ This roadmap keeps the internship project understandable and scientifically orde
 
 ## Current Principle
 
-Do not start machine learning until the data pipeline is validated.
+Do not start advanced machine learning until the data pipeline and baseline models are validated.
 
 The previous project work is useful reference material, but this clean repository should contain only validated and explainable steps.
 
@@ -19,23 +19,17 @@ The previous project work is useful reference material, but this clean repositor
 
 ## Phase F9: Prediction and Machine Learning
 
-F9 should start only after visual checks confirm the F8 outputs.
+F9 has now started with Neusta livability score prediction.
 
 Recommended order:
 
-1. Define the prediction problem.
-2. Decide which target to use:
-   - Neusta binary livability,
-   - Meteo France 0 to 7 comfort score,
-   - future rule-based risk level.
-3. Create a time-based train/validation/test split.
-4. Train simple baselines first:
-   - majority class,
-   - logistic regression,
-   - decision tree,
-   - random forest or gradient boosting.
-5. Compare models using clear metrics.
-6. Only then consider sequence models.
+| Use case | Status | Objective | Output |
+|---|---|---|---|
+| F9-UC2 Problem definition | Complete | Define livability-score prediction and challenges | `docs/f9/F9_UC2_problem_definition.md` |
+| F9-UC3 Model review | Complete | Compare relevant model families | `docs/f9/F9_UC3_model_review.md` |
+| F9-UC6 Humidex thresholds | Complete | Identify critical humidex zones | `docs/f9/F9_UC6_humidex_thresholds.md` |
+| F9-UC7 Test prediction models | Complete | Compare baseline score-prediction models | `reports/tables/f9_uc7_livability_model_results.json` |
+| F9-UC8 Advanced models | Initial test complete | Test CNN-LSTM as an advanced candidate | `reports/tables/f9_uc8_sequence_model_results.json` |
 
 ## Phase F10: Risk Detection
 
@@ -64,11 +58,9 @@ Every task should include:
 
 ## Immediate Next Step
 
-Create exploratory visualizations from F8-UC4 outputs:
+The immediate next F9 improvements are:
 
-- source coverage timeline,
-- temperature and humidity time series,
-- missingness after cleaning,
-- imputation counts,
-- Neusta livability distribution.
-
+- verify how Neusta `vivabilite_binary_mean` was created,
+- rerun F9-UC7 without humidex features to test target leakage risk,
+- define a future-horizon target, for example livability 15 or 60 minutes ahead,
+- prepare F10 risk labels from humidex and environmental thresholds.

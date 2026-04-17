@@ -60,7 +60,18 @@ Open the integrated terminal and run:
 python scripts/f8_uc3_convert_to_standard_csv.py
 python scripts/f8_uc4_clean_impute_normalize_aggregate.py
 MPLCONFIGDIR=.cache/matplotlib python scripts/f8_uc4_make_quality_figures.py
+MPLCONFIGDIR=.cache/matplotlib python scripts/f9_uc6_humidex_threshold_analysis.py
+MPLCONFIGDIR=.cache/matplotlib python scripts/f9_uc7_test_livability_models.py
 ```
+
+For the optional F9-UC8 CNN-LSTM experiment, install the advanced dependencies first:
+
+```bash
+python -m pip install -r requirements-advanced.txt
+python scripts/f9_uc8_train_sequence_model.py --model cnn_lstm --epochs 8
+```
+
+You can also use the Run and Debug panel. This repository includes VS Code launch buttons for F8-UC3, F8-UC4, F9-UC6, F9-UC7, and the optional F9-UC8 CNN-LSTM experiment.
 
 ## Connect Codex and VS Code
 
@@ -86,4 +97,3 @@ Recommended extensions:
 - Ruff
 - GitHub Pull Requests
 - Markdown Preview Mermaid Support, optional
-

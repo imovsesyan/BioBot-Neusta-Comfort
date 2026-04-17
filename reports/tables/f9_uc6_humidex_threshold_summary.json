@@ -1,0 +1,57 @@
+{
+  "task": "F9-UC6 critical humidex thresholds",
+  "threshold_reference": {
+    "below_30": "Little or no discomfort",
+    "30_to_39": "Some discomfort",
+    "40_to_45": "Great discomfort; reduce exertion",
+    "above_45": "Dangerous",
+    "above_54": "Imminent heat-stroke risk in occupational guidance"
+  },
+  "sources": {
+    "neusta": {
+      "source": "neusta",
+      "input_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/neusta_15min_clean.csv",
+      "non_null_humidex_rows": 4451,
+      "min": 15.588477777777776,
+      "max": 28.89334444444444,
+      "mean": 23.066539995540502,
+      "threshold_counts": {
+        "below_30_little_or_no_discomfort": 4451,
+        "30_to_39_some_discomfort": 0,
+        "40_to_45_great_discomfort": 0,
+        "above_45_to_54_dangerous": 0,
+        "above_54_imminent_heat_stroke_risk": 0
+      },
+      "threshold_percentages": {
+        "below_30_little_or_no_discomfort": 100.0,
+        "30_to_39_some_discomfort": 0.0,
+        "40_to_45_great_discomfort": 0.0,
+        "above_45_to_54_dangerous": 0.0,
+        "above_54_imminent_heat_stroke_risk": 0.0
+      }
+    },
+    "meteo_france": {
+      "source": "meteo_france",
+      "input_file": "/Users/inesamovsesyan/Documents/Playground/BioBot-Neusta-Comfort/data/processed/meteo_france_1h_clean.csv",
+      "non_null_humidex_rows": 452795,
+      "min": -19.99999999999997,
+      "max": 56.21302788757957,
+      "mean": 18.261078704916773,
+      "threshold_counts": {
+        "below_30_little_or_no_discomfort": 355101,
+        "30_to_39_some_discomfort": 74067,
+        "40_to_45_great_discomfort": 22030,
+        "above_45_to_54_dangerous": 1594,
+        "above_54_imminent_heat_stroke_risk": 3
+      },
+      "threshold_percentages": {
+        "below_30_little_or_no_discomfort": 78.42423171633962,
+        "30_to_39_some_discomfort": 16.35773363221767,
+        "40_to_45_great_discomfort": 4.865336410516901,
+        "above_45_to_54_dangerous": 0.35203568944003355,
+        "above_54_imminent_heat_stroke_risk": 0.0006625514857717069
+      }
+    }
+  },
+  "scope_note": "Humidex thresholds are used for safety context and future risk labels; they are not treated as the only livability target."
+}

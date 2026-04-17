@@ -14,7 +14,44 @@
       "request": "launch",
       "program": "${workspaceFolder}/scripts/f8_uc4_clean_impute_normalize_aggregate.py",
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Run F8-UC4 Quality Figures",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/f8_uc4_make_quality_figures.py",
+      "console": "integratedTerminal",
+      "env": {
+        "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib"
+      }
+    },
+    {
+      "name": "Run F9-UC6 Humidex Thresholds",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/f9_uc6_humidex_threshold_analysis.py",
+      "console": "integratedTerminal",
+      "env": {
+        "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib"
+      }
+    },
+    {
+      "name": "Run F9-UC7 Livability Models",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/f9_uc7_test_livability_models.py",
+      "console": "integratedTerminal",
+      "env": {
+        "MPLCONFIGDIR": "${workspaceFolder}/.cache/matplotlib"
+      }
+    },
+    {
+      "name": "Run F9-UC8 CNN-LSTM Experiment",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/f9_uc8_train_sequence_model.py",
+      "args": ["--model", "cnn_lstm", "--epochs", "8"],
+      "console": "integratedTerminal"
     }
   ]
 }
-
