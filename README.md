@@ -80,6 +80,23 @@ The raw reference data currently lives outside the repository:
 
 Large raw and generated CSV files should not be committed to GitHub.
 
+The final cleaned F8-UC4 datasets are available in GitHub as compressed CSV files:
+
+```text
+data/processed/iot_15min_clean.csv.gz
+data/processed/aquacheck_15min_clean.csv.gz
+data/processed/neusta_15min_clean.csv.gz
+data/processed/meteo_france_1h_clean.csv.gz
+```
+
+They can be read directly with pandas, for example:
+
+```python
+import pandas as pd
+
+neusta = pd.read_csv("data/processed/neusta_15min_clean.csv.gz")
+```
+
 ## Setup
 
 From the repository root:
@@ -126,6 +143,8 @@ data/processed/neusta_15min_clean.csv
 data/processed/meteo_france_1h_clean.csv
 reports/tables/f8_uc4_cleaning_summary.json
 ```
+
+For GitHub sharing, the four final CSV files are compressed as `.csv.gz`.
 
 ## Generate Quality Figures
 
