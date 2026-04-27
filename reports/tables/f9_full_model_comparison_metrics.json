@@ -1,0 +1,167 @@
+{
+  "task": "F9 full model comparison \u2014 train/val/test for classical and CNN-LSTM",
+  "input_file": "/Users/inesamovsesyan/BioBot-Neusta-Comfort/data/processed/neusta_15min_clean.csv.gz",
+  "target": "vivabilite_binary_mean",
+  "split": {
+    "method": "chronological",
+    "train_rows": 3020,
+    "validation_rows": 647,
+    "test_rows": 648,
+    "n_total_rows": 4315
+  },
+  "classical_with_humidex": {
+    "mean_baseline": {
+      "train": {
+        "mae": 0.383102122713916,
+        "rmse": 0.4350928836028137,
+        "r2": 0.0
+      },
+      "validation": {
+        "mae": 0.3784436403710793,
+        "rmse": 0.42962748714141674,
+        "r2": -0.0009292048601301506
+      },
+      "test": {
+        "mae": 0.3449590211657908,
+        "rmse": 0.3886810830029215,
+        "r2": -0.05032792516063345
+      },
+      "n_train": 3020,
+      "n_validation": 647,
+      "n_test": 648,
+      "n_features": 36
+    },
+    "ridge_regression": {
+      "train": {
+        "mae": 0.15709946595410548,
+        "rmse": 0.2286522520243917,
+        "r2": 0.7238233188793031
+      },
+      "validation": {
+        "mae": 0.16378568398587956,
+        "rmse": 0.2321083872881106,
+        "r2": 0.7078533500048041
+      },
+      "test": {
+        "mae": 0.17534760582952755,
+        "rmse": 0.24730614403654536,
+        "r2": 0.5747856465725936
+      },
+      "n_train": 3020,
+      "n_validation": 647,
+      "n_test": 648,
+      "n_features": 36
+    },
+    "random_forest": {
+      "train": {
+        "mae": 0.0030960786391798223,
+        "rmse": 0.01793741148197501,
+        "r2": 0.9983003653286643
+      },
+      "validation": {
+        "mae": 0.0025677887994818315,
+        "rmse": 0.01997323297220551,
+        "r2": 0.9978367038467096
+      },
+      "test": {
+        "mae": 0.0032853384036477576,
+        "rmse": 0.021791377266302998,
+        "r2": 0.9966985291806002
+      },
+      "n_train": 3020,
+      "n_validation": 647,
+      "n_test": 648,
+      "n_features": 36
+    },
+    "hist_gradient_boosting": {
+      "train": {
+        "mae": 0.0022866375226848683,
+        "rmse": 0.011250321138709846,
+        "r2": 0.9993314007594273
+      },
+      "validation": {
+        "mae": 0.0033420719997665615,
+        "rmse": 0.01924088091841712,
+        "r2": 0.9979924371702965
+      },
+      "test": {
+        "mae": 0.003322186050282937,
+        "rmse": 0.01880726878895436,
+        "r2": 0.9975408242543489
+      },
+      "n_train": 3020,
+      "n_validation": 647,
+      "n_test": 648,
+      "n_features": 36
+    },
+    "xgboost": {
+      "train": {
+        "mae": 0.002767793577255922,
+        "rmse": 0.013492139251856484,
+        "r2": 0.9990383928812734
+      },
+      "validation": {
+        "mae": 0.003232059173692621,
+        "rmse": 0.01994162217622953,
+        "r2": 0.997843545943788
+      },
+      "test": {
+        "mae": 0.0036104626951962643,
+        "rmse": 0.020983691109457116,
+        "r2": 0.9969387283248564
+      },
+      "n_train": 3020,
+      "n_validation": 647,
+      "n_test": 648,
+      "n_features": 36
+    }
+  },
+  "cnn_lstm_with_humidex": {
+    "no_humidex": false,
+    "epochs_completed": 8,
+    "epochs_requested": 8,
+    "n_features": 36,
+    "n_train_seq": 3004,
+    "n_val_seq": 631,
+    "n_test_seq": 632,
+    "train": {
+      "mae": 0.2700175344944,
+      "rmse": 0.3875122022245752,
+      "r2": 0.20940226316452026
+    },
+    "validation": {
+      "mae": 0.2871057391166687,
+      "rmse": 0.39268262620494193,
+      "r2": 0.17734277248382568
+    },
+    "test": {
+      "mae": 0.3000347316265106,
+      "rmse": 0.4173707159678776,
+      "r2": -0.187933087348938
+    }
+  },
+  "cnn_lstm_no_humidex": {
+    "no_humidex": true,
+    "epochs_completed": 6,
+    "epochs_requested": 8,
+    "n_features": 27,
+    "n_train_seq": 3004,
+    "n_val_seq": 631,
+    "n_test_seq": 632,
+    "train": {
+      "mae": 0.4155738353729248,
+      "rmse": 0.43067598218273845,
+      "r2": 0.023468852043151855
+    },
+    "validation": {
+      "mae": 0.424774706363678,
+      "rmse": 0.4376602560538899,
+      "r2": -0.021903157234191895
+    },
+    "test": {
+      "mae": 0.40726593136787415,
+      "rmse": 0.4178879205142326,
+      "r2": -0.19087910652160645
+    }
+  }
+}
