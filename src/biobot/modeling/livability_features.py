@@ -120,6 +120,29 @@ def chronological_split(
     )
 
 
+def walk_forward_splits(
+    df: pd.DataFrame,
+    n_splits: int = 5,
+    min_train_fraction: float = 0.40,
+) -> list[tuple[pd.DataFrame, pd.DataFrame]]:
+    """Expanding-window train/test pairs for time-series cross-validation.
+
+    Each pair uses all data up to a cutpoint as train and the next
+    step-sized slice as test. More reliable than a single split on small datasets.
+    """
+    n = len(df)
+    min_train = int(n * min_train_fraction)
+    step = max(1, (n - min_train) // n_splits)
+    splits = []
+    for i in range(n_splits):
+        train_end = min_train + i * step
+        test_end = min(train_end + step, n)
+        if train_end >= n or test_end > n:
+            break
+        splits.append((df.iloc[:train_end].copy(), df.iloc[train_end:test_end].copy()))
+    return splits
+
+
 def make_sequence_arrays(
     df: pd.DataFrame,
     feature_columns: list[str],

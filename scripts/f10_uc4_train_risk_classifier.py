@@ -39,7 +39,7 @@ from sklearn.preprocessing import StandardScaler
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from biobot.risk.rules import RISK_LEVEL_ORDER, add_risk_labels
+from biobot.risk.rules import RISK_LEVEL_ORDER, add_risk_labels  # noqa: E402
 
 
 DEFAULT_INPUT = ROOT / "data" / "processed" / "f10_meteo_risk_labels.csv"
@@ -305,15 +305,23 @@ def main() -> None:
     parser.add_argument("--confusion-figure", type=Path, default=DEFAULT_CONFUSION_FIGURE)
     parser.add_argument("--max-train-rows", type=int, default=160_000)
     parser.add_argument("--random-state", type=int, default=42)
+    parser.add_argument(
+        "--no-humidex",
+        action="store_true",
+        help="Ablation: remove humidex_c from features to test non-circular classification.",
+    )
     args = parser.parse_args()
 
     df = load_risk_data(args.input, args.fallback_meteo)
     train_df, validation_df, test_df = chronological_split(df)
     train_df_used = cap_training_rows(train_df, args.max_train_rows, args.random_state)
 
+    candidate_features = BASE_FEATURES + ["hour_sin", "hour_cos", "month_sin", "month_cos"]
+    if args.no_humidex:
+        candidate_features = [c for c in candidate_features if c != "humidex_c"]
     feature_columns = [
         column
-        for column in BASE_FEATURES + ["hour_sin", "hour_cos", "month_sin", "month_cos"]
+        for column in candidate_features
         if column in df.columns and train_df_used[column].notna().any()
     ]
 
@@ -361,6 +369,7 @@ def main() -> None:
 
     summary = {
         "task": "F10-UC4 ML-based risk classification",
+        "humidex_ablation": args.no_humidex,
         "input_file": str(args.input if args.input.exists() else args.fallback_meteo),
         "prediction_file": str(args.predictions),
         "prediction_examples_file": str(args.prediction_examples),

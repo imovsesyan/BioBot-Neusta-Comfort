@@ -4,6 +4,15 @@ This script trains a small LSTM or CNN-LSTM on Neusta `vivabilite_binary_mean`.
 It is intentionally optional because advanced models should be compared only
 after F9-UC7 baselines are working.
 
+Transformer and hybrid ensemble architectures are intentionally out of scope:
+- Dataset size: ~4,315 usable rows is too small for data-hungry Transformers.
+- Target validity: vivabilite_binary_mean may be formula-derived from humidex;
+  advanced architecture improvements are unreliable until the target is validated
+  with independent human comfort annotations (see F9_UC7_ablation.md).
+- Current evidence: CNN-LSTM underperforms tabular models on this dataset,
+  consistent with the target-leakage warning documented in CLAUDE.md.
+  Use --no-humidex for a fair comparison with the F9-UC7 tabular ablation.
+
 Run from the repository root:
     python scripts/f9_uc8_train_sequence_model.py --model cnn_lstm --epochs 8
 """
@@ -119,12 +128,25 @@ def main() -> None:
     parser.add_argument("--epochs", type=int, default=8)
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--random-state", type=int, default=42)
+    parser.add_argument(
+        "--no-humidex",
+        action="store_true",
+        help="Ablation: remove humidex_c and all derived features for fair comparison with F9-UC7.",
+    )
     args = parser.parse_args()
 
     tf = import_tensorflow()
     tf.keras.utils.set_random_seed(args.random_state)
 
     df, feature_columns, target_column = prepare_neusta_livability_table(str(args.input))
+    if args.no_humidex:
+        feature_columns = [
+            c for c in feature_columns
+            if c != "humidex_c"
+            and c != "humidex_c_norm"
+            and not c.startswith("humidex_c_lag_")
+            and not c.startswith("humidex_c_rolling_")
+        ]
     train_df, validation_df, test_df = chronological_split(df)
     train_df, validation_df, test_df, feature_columns = preprocess_features(
         train_df,

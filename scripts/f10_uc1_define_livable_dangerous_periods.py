@@ -21,7 +21,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from biobot.risk.rules import (
+from biobot.risk.rules import (  # noqa: E402
     DEFAULT_LIVABILITY_THRESHOLD,
     LIVABILITY_STATUS_ORDER,
     RISK_LEVEL_DETAILS,

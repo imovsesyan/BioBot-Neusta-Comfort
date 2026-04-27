@@ -1,0 +1,151 @@
+{
+  "task": "F9-UC7 livability score prediction",
+  "humidex_ablation": true,
+  "target": "vivabilite_binary_mean",
+  "target_scale": "0..1 interval livability score from Neusta aggregated labels",
+  "input_file": "data/processed/neusta_15min_clean.csv.gz",
+  "n_rows_with_target": 4315,
+  "n_features": 27,
+  "feature_columns": [
+    "temperature_c",
+    "relative_humidity_pct",
+    "record_count",
+    "temperature_c_norm",
+    "relative_humidity_pct_norm",
+    "temperature_secondary_c_norm",
+    "humidity_secondary_pct_norm",
+    "hour_sin",
+    "hour_cos",
+    "dayofweek_sin",
+    "dayofweek_cos",
+    "month_sin",
+    "month_cos",
+    "temperature_c_lag_1",
+    "temperature_c_lag_4",
+    "temperature_c_lag_16",
+    "temperature_c_rolling_mean_4",
+    "temperature_c_rolling_std_4",
+    "temperature_c_rolling_mean_16",
+    "temperature_c_rolling_std_16",
+    "relative_humidity_pct_lag_1",
+    "relative_humidity_pct_lag_4",
+    "relative_humidity_pct_lag_16",
+    "relative_humidity_pct_rolling_mean_4",
+    "relative_humidity_pct_rolling_std_4",
+    "relative_humidity_pct_rolling_mean_16",
+    "relative_humidity_pct_rolling_std_16"
+  ],
+  "dropped_features": {
+    "reason": "No non-missing values in the training split.",
+    "columns": [
+      "humidex_c",
+      "humidex_c_lag_1",
+      "humidex_c_lag_16",
+      "humidex_c_lag_4",
+      "humidex_c_norm",
+      "humidex_c_rolling_mean_16",
+      "humidex_c_rolling_mean_4",
+      "humidex_c_rolling_std_16",
+      "humidex_c_rolling_std_4",
+      "pm10_ugm3_norm",
+      "pm1_ugm3_norm",
+      "pm25_ugm3_norm"
+    ]
+  },
+  "split": {
+    "method": "chronological",
+    "train_rows": 3020,
+    "validation_rows": 647,
+    "test_rows": 648
+  },
+  "best_model_by_test_mae": "hist_gradient_boosting",
+  "results": [
+    {
+      "model": "mean_baseline",
+      "validation_mae": 0.3784436403710793,
+      "validation_rmse": 0.42962748714141674,
+      "validation_r2": -0.0009292048601301506,
+      "test_mae": 0.3449590211657908,
+      "test_rmse": 0.3886810830029215,
+      "test_r2": -0.05032792516063345
+    },
+    {
+      "model": "ridge_regression",
+      "validation_mae": 0.20515795825487182,
+      "validation_rmse": 0.262985789251188,
+      "validation_r2": 0.6249546324447421,
+      "test_mae": 0.2293078022520686,
+      "test_rmse": 0.2869990777952179,
+      "test_r2": 0.42733702328127865
+    },
+    {
+      "model": "random_forest",
+      "validation_mae": 0.0214178274373585,
+      "validation_rmse": 0.07027155867307722,
+      "validation_r2": 0.9732219828261731,
+      "test_mae": 0.036900776656681955,
+      "test_rmse": 0.12742982763238078,
+      "test_r2": 0.887103547554408
+    },
+    {
+      "model": "hist_gradient_boosting",
+      "validation_mae": 0.018826743264535335,
+      "validation_rmse": 0.06876448635320057,
+      "validation_r2": 0.9743582507352384,
+      "test_mae": 0.031986445389354724,
+      "test_rmse": 0.13089342849382893,
+      "test_r2": 0.8808829880442987
+    },
+    {
+      "model": "xgboost",
+      "validation_mae": 0.04457442880857901,
+      "validation_rmse": 0.10640827548223057,
+      "validation_r2": 0.9385997623394434,
+      "test_mae": 0.04793318601547311,
+      "test_rmse": 0.11975171491349342,
+      "test_r2": 0.9002985241914796
+    },
+    {
+      "model": "tree_blend_equal_weight",
+      "validation_mae": 0.028068990604017453,
+      "validation_rmse": 0.07664106378605166,
+      "validation_r2": 0.968147590468909,
+      "test_mae": 0.038719384340486156,
+      "test_rmse": 0.12115159127644463,
+      "test_r2": 0.8979539145594855,
+      "model_family": "prediction_blend_ensemble",
+      "ensemble_members": [
+        "random_forest",
+        "hist_gradient_boosting",
+        "xgboost"
+      ],
+      "ensemble_weights": {
+        "random_forest": 0.3333333333333333,
+        "hist_gradient_boosting": 0.3333333333333333,
+        "xgboost": 0.3333333333333333
+      }
+    },
+    {
+      "model": "tree_blend_validation_weighted",
+      "validation_mae": 0.024325187022531017,
+      "validation_rmse": 0.07175589930348024,
+      "validation_r2": 0.9720787751496504,
+      "test_mae": 0.03658526491914604,
+      "test_rmse": 0.12384704679082023,
+      "test_r2": 0.8933626328292884,
+      "model_family": "prediction_blend_ensemble",
+      "ensemble_members": [
+        "random_forest",
+        "hist_gradient_boosting",
+        "xgboost"
+      ],
+      "ensemble_weights": {
+        "random_forest": 0.3819529252321008,
+        "hist_gradient_boosting": 0.4345202846222238,
+        "xgboost": 0.1835267901456754
+      }
+    }
+  ],
+  "skipped_models": [],
+  "scope_note": "Recommendation systems and model interpretation are intentionally out of scope for this F9 run."
+}

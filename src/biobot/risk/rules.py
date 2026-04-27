@@ -33,6 +33,26 @@ RISK_LEVEL_DETAILS = {
 }
 
 
+HUMIDEX_LABELS = [
+    "below_30_little_or_no_discomfort",
+    "30_to_39_some_discomfort",
+    "40_to_45_great_discomfort",
+    "above_45_to_54_dangerous",
+    "above_54_imminent_heat_stroke_risk",
+]
+
+
+def categorize_humidex(humidex: pd.Series) -> pd.Categorical:
+    """Assign humidex values to ordered comfort and danger bands."""
+    categories = pd.Series(index=humidex.index, dtype="object")
+    categories.loc[humidex < 30] = HUMIDEX_LABELS[0]
+    categories.loc[(humidex >= 30) & (humidex < 40)] = HUMIDEX_LABELS[1]
+    categories.loc[(humidex >= 40) & (humidex <= 45)] = HUMIDEX_LABELS[2]
+    categories.loc[(humidex > 45) & (humidex <= 54)] = HUMIDEX_LABELS[3]
+    categories.loc[humidex > 54] = HUMIDEX_LABELS[4]
+    return pd.Categorical(categories, categories=HUMIDEX_LABELS, ordered=True)
+
+
 ALERT_DETAILS = {
     "discomfort": {
         "alert_severity": "info",

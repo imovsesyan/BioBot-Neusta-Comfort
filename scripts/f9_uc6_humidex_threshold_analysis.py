@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import matplotlib
@@ -23,26 +24,8 @@ DEFAULT_METEO = ROOT / "data" / "processed" / "meteo_france_1h_clean.csv"
 DEFAULT_RESULTS = ROOT / "reports" / "tables" / "f9_uc6_humidex_threshold_summary.json"
 DEFAULT_FIGURE = ROOT / "reports" / "figures" / "f9_uc6_humidex_distribution.png"
 
-
-HUMIDEX_LABELS = [
-    "below_30_little_or_no_discomfort",
-    "30_to_39_some_discomfort",
-    "40_to_45_great_discomfort",
-    "above_45_to_54_dangerous",
-    "above_54_imminent_heat_stroke_risk",
-]
-
-
-def categorize_humidex(humidex: pd.Series) -> pd.Categorical:
-    """Assign humidex values to ordered comfort and danger bands."""
-
-    categories = pd.Series(index=humidex.index, dtype="object")
-    categories.loc[humidex < 30] = HUMIDEX_LABELS[0]
-    categories.loc[(humidex >= 30) & (humidex < 40)] = HUMIDEX_LABELS[1]
-    categories.loc[(humidex >= 40) & (humidex <= 45)] = HUMIDEX_LABELS[2]
-    categories.loc[(humidex > 45) & (humidex <= 54)] = HUMIDEX_LABELS[3]
-    categories.loc[humidex > 54] = HUMIDEX_LABELS[4]
-    return pd.Categorical(categories, categories=HUMIDEX_LABELS, ordered=True)
+sys.path.insert(0, str(ROOT / "src"))
+from biobot.risk.rules import HUMIDEX_LABELS, categorize_humidex  # noqa: E402
 
 
 def summarize_humidex(path: Path, source: str) -> tuple[pd.DataFrame, dict]:

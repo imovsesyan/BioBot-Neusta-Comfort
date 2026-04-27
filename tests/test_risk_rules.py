@@ -3,6 +3,7 @@ import pandas as pd
 from biobot.risk.rules import (
     add_livability_score_status,
     add_risk_labels,
+    categorize_humidex,
     create_rule_alerts,
 )
 
@@ -45,3 +46,29 @@ def test_add_livability_score_status_uses_current_neusta_direction():
         "not_livable",
     ]
     assert result["is_livable_by_score"].tolist() == [True, True, False, False]
+
+
+# ── FIX 6b: categorize_humidex ───────────────────────────────────────────────
+
+
+def test_categorize_humidex_assigns_five_ordered_bands():
+    humidex = pd.Series([25.0, 35.0, 42.0, 50.0, 60.0])
+    result = categorize_humidex(humidex)
+    assert result[0] == "below_30_little_or_no_discomfort"
+    assert result[1] == "30_to_39_some_discomfort"
+    assert result[2] == "40_to_45_great_discomfort"
+    assert result[3] == "above_45_to_54_dangerous"
+    assert result[4] == "above_54_imminent_heat_stroke_risk"
+
+
+def test_categorize_humidex_boundary_exactly_at_30():
+    humidex = pd.Series([29.99, 30.0])
+    result = categorize_humidex(humidex)
+    assert result[0] == "below_30_little_or_no_discomfort"
+    assert result[1] == "30_to_39_some_discomfort"
+
+
+def test_categorize_humidex_returns_ordered_categorical():
+    humidex = pd.Series([25.0, 55.0])
+    result = categorize_humidex(humidex)
+    assert result.ordered is True

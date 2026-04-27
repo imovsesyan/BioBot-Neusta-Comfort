@@ -21,7 +21,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from biobot.risk.rules import add_risk_labels, create_rule_alerts
+from biobot.risk.rules import add_risk_labels, create_rule_alerts  # noqa: E402
 
 
 DEFAULT_INPUT = ROOT / "data" / "processed" / "f10_meteo_risk_labels.csv"

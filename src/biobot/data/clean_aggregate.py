@@ -193,6 +193,9 @@ def impute_short_gaps(
             limit=max_gap_steps,
             limit_direction="both",
         )
+        # Edge NaNs at the start/end of a group have only one anchor, so
+        # time-based interpolation cannot reach them. ffill/bfill intentionally
+        # fill those edge positions up to max_gap_steps steps.
         indexed[numeric_columns] = indexed[numeric_columns].ffill(limit=max_gap_steps)
         indexed[numeric_columns] = indexed[numeric_columns].bfill(limit=max_gap_steps)
         group = indexed.reset_index()

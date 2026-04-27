@@ -318,6 +318,11 @@ def main() -> None:
     parser.add_argument("--figure", type=Path, default=DEFAULT_FIGURE)
     parser.add_argument("--timeseries-figure", type=Path, default=DEFAULT_TIMESERIES_FIGURE)
     parser.add_argument("--random-state", type=int, default=42)
+    parser.add_argument(
+        "--no-humidex",
+        action="store_true",
+        help="Ablation: remove humidex_c and all its derived features.",
+    )
     args = parser.parse_args()
 
     df, feature_columns, target_column = prepare_neusta_livability_table(str(args.input))
@@ -325,6 +330,14 @@ def main() -> None:
 
     original_feature_columns = list(feature_columns)
     feature_columns = [column for column in feature_columns if train_df[column].notna().any()]
+    if args.no_humidex:
+        feature_columns = [
+            c for c in feature_columns
+            if c != "humidex_c"
+            and c != "humidex_c_norm"
+            and not c.startswith("humidex_c_lag_")
+            and not c.startswith("humidex_c_rolling_")
+        ]
     dropped_features = sorted(set(original_feature_columns) - set(feature_columns))
 
     x_train = train_df[feature_columns]
@@ -364,6 +377,7 @@ def main() -> None:
 
     summary = {
         "task": "F9-UC7 livability score prediction",
+        "humidex_ablation": args.no_humidex,
         "target": target_column,
         "target_scale": "0..1 interval livability score from Neusta aggregated labels",
         "input_file": str(args.input),
