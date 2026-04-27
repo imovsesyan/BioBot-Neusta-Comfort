@@ -2,14 +2,13 @@
 
 Clean data-science rebuild for the BioBot / Neusta internship project.
 
-The project prepares environmental sensor datasets for comfort, livability, and risk prediction. The current validated scope includes **F8-UC3**, **F8-UC4**, **F9 livability-score prediction**, and initial **F10 risk detection**:
+The project prepares environmental sensor datasets for comfort, livability, risk prediction, and personalized comfort recommendations. The current validated scope includes **F8-UC3**, **F8-UC4**, **F9 livability-score prediction**, **F10 risk detection**, and **F11 personalized recommendations**:
 
 - **F8-UC3:** convert raw datasets into standardized CSV files.
 - **F8-UC4:** clean, impute, normalize, and aggregate the standardized data.
 - **F9:** define the livability prediction problem, compare model families, analyze humidex thresholds, and test baseline prediction models.
 - **F10:** define humidex risk periods, generate rule-based alerts, and test ML risk classification.
-
-Recommendation systems, production notification delivery, and model interpretation are intentionally postponed.
+- **F11:** build a personalized comfort recommendation system using synthetic user profiles, rule-based logic, and AI-assisted rephrasing.
 
 ## Project Goals
 
@@ -29,45 +28,48 @@ The pipeline should eventually support:
 
 ## Current Repository Status
 
-This clean repo contains the validated F8 data-preparation work, the first F9 livability-score prediction workflow, and the initial F10 risk-detection workflow.
-
 | Area | Status |
 |---|---|
 | Raw dataset study | Used as context |
 | F8-UC3 standardized CSV conversion | Complete |
 | F8-UC4 cleaning, imputation, normalization, aggregation | Complete |
-| F9 machine learning | Initial livability prediction complete |
-| F10 risk detection and alerts | Initial rule and ML workflow complete |
+| F9 machine learning | Livability prediction + ablation complete |
+| F10 risk detection and alerts | Rule and ML workflow + ablation complete |
+| F11 personalized recommendations | Rule-based + AI rephrasing complete |
 
 ## Repository Structure
 
 ```text
 BioBot-Neusta-Comfort/
   README.md
+  CLAUDE.md               # architecture and scientific constraints reference
   requirements.txt
   pyproject.toml
   data/
     raw/                  # optional local raw data, not committed
     interim/              # generated standardized CSV files, not committed
-    processed/            # generated cleaned CSV files, not committed
+    processed/            # generated cleaned CSV files (committed as .csv.gz)
+    outputs/              # F11 recommendation output CSV
   docs/
     f8/                   # F8 documentation and manager summary
-    f9/                   # F9 prediction documentation and manager summary
-    f10/                  # F10 risk detection documentation
+    f9/                   # F9 prediction documentation, ablation, and model review
+    f10/                  # F10 risk detection documentation and ablation
+    f11/                  # F11 recommendation system research findings
     GITHUB_SETUP.md
     PROJECT_ROADMAP.md
     VSCODE_SETUP.md
-  notebooks/              # future exploratory notebooks
+  notebooks/              # exploratory notebooks
   reports/
-    figures/              # small report figures
-    tables/               # small reproducibility summaries
+    figures/              # report figures
+    tables/               # reproducibility summaries and prediction examples
   scripts/                # runnable pipeline scripts
   src/
     biobot/
-      data/               # data processing package
+      data/               # F8 data processing package
       modeling/           # F9 feature preparation and metrics
       risk/               # F10 risk rules and alert helpers
-  tests/                  # lightweight validation tests
+      recommendations/    # F11 user profile, rule recommender, AI recommender
+  tests/                  # validation tests
 ```
 
 ## Raw Data Location
@@ -207,6 +209,31 @@ Train ML classifiers for the rule-derived risk labels:
 MPLCONFIGDIR=.cache/matplotlib python scripts/f10_uc4_train_risk_classifier.py
 ```
 
+## Run F11 Personalized Recommendations
+
+Generate rule-based and AI-personalized comfort recommendations for every row in the F10 output:
+
+```bash
+python scripts/f11_uc1_uc5_recommendations.py
+```
+
+To enable AI rephrasing via Claude Haiku (optional, requires an Anthropic API key):
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+python scripts/f11_uc1_uc5_recommendations.py
+```
+
+Main output:
+
+```text
+data/outputs/f11_recommendations.csv
+```
+
+Output columns include `rec_action`, `rec_clothing_advice`, `rec_activity_advice`, `rec_alert` (non-empty for vulnerable profiles at elevated risk), and `rec_ai_text` (populated only when AI is enabled).
+
+> This output is informational only and does not constitute medical advice.
+
 ## Verified Results
 
 F8-UC3 standardized:
@@ -247,6 +274,14 @@ F10 risk detection:
 | F10-UC1 | Score-based livability status added: Neusta actual score has 3,237 livable and 1,078 not-livable rows; F9 predicted test score has 532 livable and 116 not-livable rows. Humidex heat-risk labels are kept as a separate safety layer. |
 | F10-UC3 | 97,694 simulated rule-based alerts generated from Meteo France, including 3 critical humidex alerts. |
 | F10-UC4 | Random Forest classifier reached macro F1 1.0000 on rule-derived risk labels. |
+| F10 ablation | Removing `humidex_c` from F10-UC4 drops macro F1 from 1.0000 to 0.6667, confirming humidex is the primary signal. |
+
+F11 personalized recommendations:
+
+| Task | Main result |
+|---|---|
+| F11-UC1 | Rule-based recommender covers all 5 humidex risk levels × 8 synthetic profiles (40 cells). Actions sourced from WHO, Santé publique France, and ASHRAE 55. Vulnerable profiles at high_risk/dangerous/critical always receive a non-empty alert. |
+| F11-UC5 | AI rephrasing layer uses Claude Haiku with prompt caching. Graceful fallback to rule text when API key is absent. In-memory cache avoids redundant API calls within a run. |
 
 ## Key Scientific Decisions
 
@@ -261,31 +296,47 @@ F10 risk detection:
 
 ## Documentation
 
-- [F8-UC3 and F8-UC4 Pipeline](docs/f8/F8_UC3_UC4_pipeline.md)
-- [F8 Manager Summary](docs/f8/F8_UC3_UC4_manager_summary.md)
+### Project
+
 - [Project Roadmap](docs/PROJECT_ROADMAP.md)
 - [Data Structure Report](docs/DATA_STRUCTURE_REPORT.md)
+- [Chat Handoff Guide](docs/CHAT_HANDOFF_GUIDE.md)
 - [VS Code Setup](docs/VSCODE_SETUP.md)
 - [GitHub Setup](docs/GITHUB_SETUP.md)
-- [Chat Handoff Guide](docs/CHAT_HANDOFF_GUIDE.md)
+
+### F8 — Data Preparation
+
+- [F8-UC3 and F8-UC4 Pipeline](docs/f8/F8_UC3_UC4_pipeline.md)
+- [F8 Manager Summary](docs/f8/F8_UC3_UC4_manager_summary.md)
+
+### F9 — Livability Prediction
+
 - [F9 Manager Summary](docs/f9/F9_MANAGER_SUMMARY.md)
 - [F9 Problem Definition](docs/f9/F9_UC2_problem_definition.md)
 - [F9 Model Review](docs/f9/F9_UC3_model_review.md)
 - [F9 Humidex Thresholds](docs/f9/F9_UC6_humidex_thresholds.md)
 - [F9 Model Testing Results](docs/f9/F9_UC7_model_testing_results.md)
-- [F9 Advanced Models](docs/f9/F9_UC8_advanced_models.md)
+- [F9 Ablation — No Humidex](docs/f9/F9_UC7_ablation.md)
+- [F9 Advanced Models (CNN-LSTM)](docs/f9/F9_UC8_advanced_models.md)
 - [F9 ML vs Deep Learning Comparison](docs/f9/F9_ML_VS_DL_COMPARISON.md)
 - [F9 Ensemble Modeling](docs/f9/F9_ENSEMBLE_MODELING.md)
+
+### F10 — Risk Detection and Alerts
+
 - [F10 Manager Summary](docs/f10/F10_MANAGER_SUMMARY.md)
 - [F10 Livable and Dangerous Periods](docs/f10/F10_UC1_livable_dangerous_periods.md)
 - [F10 Rule-Based Alerts](docs/f10/F10_UC3_rule_based_alerts.md)
 - [F10 Risk Classification](docs/f10/F10_UC4_risk_classification.md)
+- [F10 Ablation — No Humidex](docs/f10/F10_UC4_ablation.md)
 
-## Next Recommended Step
+### F11 — Personalized Recommendations
 
-Before moving into recommendations or production alerts:
+- [F11 Research Findings and Strategy](docs/f11/F11_research_recommendations.md)
 
-- validate the meaning of Neusta `vivabilite_binary_mean`,
-- run an ablation test without `humidex_c`,
-- test next-step prediction, for example predicting livability 15 or 60 minutes ahead,
-- add non-humidex risk factors if validated thresholds are available.
+## Next Recommended Steps
+
+- Confirm the meaning of Neusta `vivabilite_binary_mean` with the data provider — the current direction (score ≥ 0.5 = not livable) is unverified.
+- Extend F11 profiles from binary fields (8 combos) to 3-bin categorical (activity/clothing/vulnerability → 36 buckets × 5 risk levels) as recommended in the F11 research document.
+- Author a complete rule table from WHO / Santé publique France / ASHRAE 55 sources and add a qualitative evaluation against published guidance.
+- Test next-step prediction — for example predicting livability 15 or 60 minutes ahead.
+- Add non-humidex risk factors if validated thresholds are available.
