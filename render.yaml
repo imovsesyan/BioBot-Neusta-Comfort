@@ -1,0 +1,50 @@
+databases:
+  - name: biosense-db
+    databaseName: biosense
+    user: biosense_user
+    plan: free
+
+services:
+  # ─── Backend (FastAPI + ML model) ──────────────────────────────────────────
+  - type: web
+    name: biosense360-backend
+    runtime: docker
+    dockerfilePath: ./biosense360/backend/Dockerfile
+    dockerContext: ./biosense360/backend
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: biosense-db
+          property: connectionString
+      - key: PYTHONPATH
+        value: /project
+      - key: PLANTNET_API_KEY
+        value: 2b10LdauayXGPmUGrwol8a6As
+      - key: ANTHROPIC_API_KEY
+        value: your_anthropic_key_here
+      - key: OPENWEATHER_API_KEY
+        value: your_openweather_key_here
+
+  # ─── Frontend (React / Vite static site) ───────────────────────────────────
+  - type: web
+    name: biosense360-frontend
+    runtime: static
+    buildCommand: cd biosense360/frontend && npm ci && npm run build
+    staticPublishPath: ./biosense360/frontend/dist
+    plan: free
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: biosense360-backend
+          type: web
+          property: url
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

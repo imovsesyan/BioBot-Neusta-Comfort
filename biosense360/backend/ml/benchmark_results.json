@@ -1,0 +1,139 @@
+{
+  "selected_model": "XGBoost",
+  "accuracy": 0.9994279176201373,
+  "f1_score": 0.9789114369082234,
+  "inference_ms": 0.001305885865116039,
+  "top_features": [
+    "temperature_c",
+    "dew_point_c",
+    "relative_humidity_pct",
+    "hour",
+    "hour_cos"
+  ],
+  "selection_reason": "XGBoost selected. Test F1-macro=0.9789, Accuracy=0.9994. Trained on real M\u00e9t\u00e9o France data (2024-2025, n=442825). humidex excluded from features \u2014 model learns Masterton boundaries from raw inputs. Class imbalance handled via compute_sample_weight(\"balanced\").",
+  "all_results": [
+    {
+      "name": "XGBoost",
+      "accuracy": 0.9994279176201373,
+      "f1_macro": 0.9789114369082234,
+      "f1_weighted": 0.9994312279490083,
+      "cv_f1_macro_mean": 0.9791616287491319,
+      "cv_f1_macro_std": 0.005562971425642672,
+      "inference_ms_per_sample": 0.001305885865116039,
+      "fit_seconds": 3.4682869911193848,
+      "explainability": "Medium",
+      "leakage_warning": false
+    }
+  ],
+  "meta": {
+    "feature_columns": [
+      "temperature_c",
+      "relative_humidity_pct",
+      "dew_point_c",
+      "wind_speed_mps",
+      "rain_1h_mm",
+      "hour",
+      "month",
+      "day_of_week",
+      "hour_sin",
+      "hour_cos",
+      "month_sin",
+      "month_cos"
+    ],
+    "class_encoding": {
+      "Comfortable": 0,
+      "Caution": 1,
+      "Extreme Caution": 2,
+      "Danger": 3
+    },
+    "feature_importance": {
+      "temperature_c": 0.473311,
+      "relative_humidity_pct": 0.066675,
+      "dew_point_c": 0.234727,
+      "wind_speed_mps": 0.017138,
+      "rain_1h_mm": 0.030157,
+      "hour": 0.055216,
+      "month": 0.020639,
+      "day_of_week": 0.003216,
+      "hour_sin": 0.033907,
+      "hour_cos": 0.037491,
+      "month_sin": 0.013418,
+      "month_cos": 0.014106
+    },
+    "leakage_audit": {
+      "humidex_in_features": false,
+      "vivabilite_in_features": false,
+      "target": "comfort_class (OHCOW 2022)",
+      "note": "humidex used only to construct the label, never as a feature."
+    },
+    "training_dataset": "Real M\u00e9t\u00e9o France 1h clean 2024-2025 (n=442825)",
+    "target_definition": "OHCOW 2022 humidex thresholds (4-class)",
+    "humidex_formula": "Masterton & Richardson 1979",
+    "chronological_split": "85% train / 15% test (time-ordered)",
+    "random_seed": 42,
+    "class_distribution_train": {
+      "Comfortable": 290769,
+      "Caution": 64288,
+      "Extreme Caution": 19894,
+      "Danger": 1450
+    },
+    "class_distribution_test": {
+      "Comfortable": 57722,
+      "Caution": 7163,
+      "Extreme Caution": 1488,
+      "Danger": 51
+    },
+    "confusion_matrix_selected": [
+      [
+        57713,
+        9,
+        0,
+        0
+      ],
+      [
+        5,
+        7147,
+        11,
+        0
+      ],
+      [
+        0,
+        5,
+        1476,
+        7
+      ],
+      [
+        0,
+        0,
+        1,
+        50
+      ]
+    ],
+    "per_class_report_selected": {
+      "Comfortable": {
+        "precision": 0.9999,
+        "recall": 0.9998,
+        "f1-score": 0.9999,
+        "support": 57722.0
+      },
+      "Caution": {
+        "precision": 0.998,
+        "recall": 0.9978,
+        "f1-score": 0.9979,
+        "support": 7163.0
+      },
+      "Extreme Caution": {
+        "precision": 0.9919,
+        "recall": 0.9919,
+        "f1-score": 0.9919,
+        "support": 1488.0
+      },
+      "Danger": {
+        "precision": 0.8772,
+        "recall": 0.9804,
+        "f1-score": 0.9259,
+        "support": 51.0
+      }
+    }
+  }
+}

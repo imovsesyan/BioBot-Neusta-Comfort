@@ -58,7 +58,7 @@ def get_time_slots(
     # 1. Try database first (seed or previously ingested)
     # ------------------------------------------------------------------
     db_slots = _slots_from_db(db, station_id, target_dt, station)
-    if len(db_slots) >= 20:  # accept if we have most of the 24 hours
+    if len(db_slots) >= 4:  # accept sparse (3-hourly) data — it will be interpolated
         return _build_forecast_response(station_id, date, db_slots)
 
     # ------------------------------------------------------------------
@@ -90,11 +90,12 @@ def _slots_from_db(
     station: Station,
 ) -> list[TimeSlot]:
     """
-    Retrieve hourly measurement slots from the database for the given day.
+    Retrieve measurement slots from the database for the given day and
+    interpolate linearly to fill all 24 hourly slots.
 
-    comfort_class is re-predicted by the ML model rather than using the
-    rule-based value stored at seed time, so the trained classifier is
-    always exercised on every DB-backed response.
+    Real Météo France data is 3-hourly (8 obs/day).  Linear interpolation
+    gives a smooth hourly representation without any invented extremes.
+    comfort_class is re-predicted by the ML model on each interpolated point.
     """
     next_day = datetime(
         target_dt.year, target_dt.month, target_dt.day,
@@ -111,21 +112,62 @@ def _slots_from_db(
         .all()
     )
 
+    if not measurements:
+        return []
+
     is_indoor = station.type == "indoor" if station else False
     lat = station.lat if station else 0.0
     lon = station.lon if station else 0.0
+    month = target_dt.month
+
+    # Build lookup dict: hour → (temp, humid, humidex)
+    raw: dict[int, tuple[float, float, float]] = {
+        m.timestamp.hour: (m.temperature, m.humidity, m.humidex)
+        for m in measurements
+    }
+
+    # If we already have all 24 hours (hourly data), skip interpolation
+    if len(raw) >= 20:
+        obs_hours = sorted(raw)
+    else:
+        # Interpolate all 0-23 hours from the sparse observations
+        obs_hours_sorted = sorted(raw)
+        # Wrap-around: treat the 0-hour of next-day as the anchor after 21:00
+        # by appending (24, value_at_hour_0_or_closest_to_midnight)
+        last_h = obs_hours_sorted[-1]
+        first_h = obs_hours_sorted[0]
+        extended = obs_hours_sorted + [first_h + 24]  # wrap
+        extended_vals = {h: raw[h] for h in obs_hours_sorted}
+        extended_vals[first_h + 24] = raw[first_h]
+
+        for target_hour in range(24):
+            if target_hour in raw:
+                continue
+            # Find surrounding anchor hours
+            lo = max((h for h in extended if h <= target_hour), default=None)
+            hi = min((h for h in extended if h > target_hour), default=None)
+            if lo is None or hi is None:
+                raw[target_hour] = raw[obs_hours_sorted[0]]
+            else:
+                alpha = (target_hour - lo) / (hi - lo)
+                t0, h0, hx0 = extended_vals.get(lo, raw.get(lo % 24, (20.0, 60.0, 20.0)))
+                t1, h1, hx1 = extended_vals.get(hi, raw.get(hi % 24, (20.0, 60.0, 20.0)))
+                raw[target_hour] = (
+                    round(t0 + alpha * (t1 - t0), 2),
+                    round(h0 + alpha * (h1 - h0), 2),
+                    round(hx0 + alpha * (hx1 - hx0), 2),
+                )
+        obs_hours = list(range(24))
 
     slots: list[TimeSlot] = []
-    for m in measurements:
-        hour = m.timestamp.hour
-        risk = humidex_to_risk_level(m.humidex)
-        # Use the trained ML model for comfort classification; falls back to
-        # rule-based transparently if model.pkl is not present.
+    for hour in sorted(obs_hours):
+        temp, humid, hx = raw[hour]
+        risk = humidex_to_risk_level(hx)
         ml_result = ml_predict(
-            temperature=m.temperature,
-            humidity=m.humidity,
+            temperature=temp,
+            humidity=humid,
             hour=hour,
-            month=m.timestamp.month,
+            month=month,
             lat=lat,
             lon=lon,
             is_indoor=is_indoor,
@@ -133,9 +175,9 @@ def _slots_from_db(
         slots.append(TimeSlot(
             hour=hour,
             label=f"{hour:02d}:00",
-            temperature=m.temperature,
-            humidity=m.humidity,
-            humidex=m.humidex,
+            temperature=round(temp, 2),
+            humidity=round(humid, 2),
+            humidex=round(hx, 2),
             comfort_class=ml_result["predicted_class"],
             risk_level=risk,
         ))

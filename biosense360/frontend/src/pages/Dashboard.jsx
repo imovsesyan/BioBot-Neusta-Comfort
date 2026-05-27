@@ -1,14 +1,10 @@
 /**
- * Dashboard page — F14-UC4
+ * Dashboard page — thermal comfort overview.
  *
  * Features:
- *   - KPI Cards row (avg humidex, danger %, hottest/coolest station)
- *   - Monthly heatmap calendar
- *   - Stacked bar chart (comfort hours per day)
- *   - Dual-axis line chart (temperature vs humidex, 30 days)
- *   - Human recommendation panel
- *   - Irrigation panel
- *   - Smart AI Advisor
+ *   - Station selector + date picker
+ *   - KPI Cards (avg humidex, risk level, temp)
+ *   - Monthly heatmap calendar (click a day to update the date)
  */
 
 import { useEffect, useState } from 'react';
@@ -16,76 +12,31 @@ import { useStations } from '../hooks/useStations.js';
 import { useRiskSummary } from '../hooks/useRiskSummary.js';
 import KPICards from '../components/dashboard/KPICards.jsx';
 import ThermalCalendar from '../components/calendar/ThermalCalendar.jsx';
-import WeeklyBar from '../components/charts/WeeklyBar.jsx';
-import DualAxis from '../components/charts/DualAxis.jsx';
-import HumanRecoPanel from '../components/recommendations/HumanRecoPanel.jsx';
-import IrrigationPanel from '../components/recommendations/IrrigationPanel.jsx';
-import SmartAdvisor from '../components/recommendations/SmartAdvisor.jsx';
-import client from '../api/client.js';
 
-function todayISO() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function thirtyDaysAgo() {
-  const d = new Date();
-  d.setDate(d.getDate() - 30);
-  return d.toISOString().slice(0, 10);
-}
+/**
+ * Default date: August 12, 2025 — peak heat day in the real Météo France 2025 dataset.
+ * The DB is seeded with real measurements for all of 2025.
+ */
+const DEFAULT_DATE = "2025-08-12";
 
 export default function Dashboard() {
-  const [selectedDate, setSelectedDate] = useState(todayISO());
+  const [selectedDate, setSelectedDate] = useState(DEFAULT_DATE);
   const [selectedStationId, setSelectedStationId] = useState(null);
-  const [trends, setTrends] = useState([]);
-  const [trendsLoading, setTrendsLoading] = useState(false);
 
   const { stations } = useStations();
   const { summary, loading: sumLoading } = useRiskSummary(selectedDate, selectedStationId);
 
-  // Fetch 30-day trends when a station is selected
-  useEffect(() => {
-    if (!selectedStationId) {
-      setTrends([]);
-      return;
-    }
-
-    let cancelled = false;
-    setTrendsLoading(true);
-
-    client.get('/api/trends', {
-      params: {
-        station_id: selectedStationId,
-        from: thirtyDaysAgo(),
-        to: todayISO(),
-      },
-    })
-      .then(({ data }) => {
-        if (!cancelled) setTrends(data.daily || []);
-      })
-      .catch(() => {
-        if (!cancelled) setTrends([]);
-      })
-      .finally(() => {
-        if (!cancelled) setTrendsLoading(false);
-      });
-
-    return () => { cancelled = true; };
-  }, [selectedStationId]);
-
-  // Auto-select first station if none selected
+  // Auto-select first station on load
   useEffect(() => {
     if (stations.length > 0 && !selectedStationId) {
       setSelectedStationId(stations[0].id);
     }
   }, [stations]);
 
-  const selectedStation = stations.find((s) => s.id === selectedStationId);
-  const currentHumidex = summary?.avg_humidex;
-  const currentClass = summary?.risk_level;
-
   return (
     <div className="space-y-6">
-      {/* Station selector */}
+
+      {/* Controls: station + date */}
       <div className="bg-[#1a1f2e] border border-[#2d3548] rounded-xl p-4 flex flex-wrap gap-4 items-end">
         <div>
           <label className="text-[#94a3b8] text-xs block mb-1">Station</label>
@@ -99,15 +50,28 @@ export default function Dashboard() {
             ))}
           </select>
         </div>
-        <div className="text-xs text-[#94a3b8]">
-          Selected date: <span className="text-[#38bdf8] font-mono">{selectedDate}</span>
+
+        <div>
+          <label className="text-[#94a3b8] text-xs block mb-1">Date</label>
+          <input
+            type="date"
+            value={selectedDate}
+            min="2025-01-01"
+            max="2025-12-31"
+            onChange={(e) => e.target.value && setSelectedDate(e.target.value)}
+            className="bg-[#0f1117] border border-[#2d3548] rounded-lg text-[#f1f5f9] text-sm px-3 py-2 focus:outline-none focus:border-[#38bdf8]"
+          />
+        </div>
+
+        <div className="text-xs text-[#64748b]">
+          Data: January – December 2025 · Météo France
         </div>
       </div>
 
       {/* KPI Cards */}
       {sumLoading ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[1,2,3,4].map(i => (
+          {[1, 2, 3, 4].map(i => (
             <div key={i} className="bg-[#1a1f2e] border border-[#2d3548] rounded-xl h-24 animate-pulse" />
           ))}
         </div>
@@ -115,59 +79,19 @@ export default function Dashboard() {
         <KPICards summary={summary} />
       )}
 
-      {/* Calendar + Charts row */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Heatmap Calendar */}
-        <Card title="Monthly Heatmap Calendar">
-          <p className="text-[#94a3b8] text-xs mb-3">
-            Click a day to update the selected date across all panels.
-          </p>
-          <ThermalCalendar
-            selectedDate={selectedDate}
-            onDateSelect={setSelectedDate}
-            stationId={selectedStationId}
-          />
-        </Card>
-
-        {/* Stacked bar chart */}
-        <Card title="Comfort Class Distribution (by Day)">
-          <WeeklyBar trendsData={trends} />
-        </Card>
+      {/* Monthly Heatmap Calendar */}
+      <div className="bg-[#1a1f2e] border border-[#2d3548] rounded-xl p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-[#f1f5f9] font-semibold text-sm">Monthly Heatmap Calendar</h2>
+          <span className="text-[#64748b] text-xs">Click any day to update the date</span>
+        </div>
+        <ThermalCalendar
+          selectedDate={selectedDate}
+          onDateSelect={setSelectedDate}
+          stationId={selectedStationId}
+        />
       </div>
 
-      {/* 30-day dual axis trend chart */}
-      <Card title={`30-Day Temperature & Humidex Trend${selectedStation ? ` — ${selectedStation.name}` : ''}`}>
-        {trendsLoading ? (
-          <div className="h-48 flex items-center justify-center text-[#94a3b8] text-sm">
-            Loading trend data...
-          </div>
-        ) : (
-          <DualAxis trendsData={trends} />
-        )}
-      </Card>
-
-      {/* Recommendation panels */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <HumanRecoPanel currentHumidex={currentHumidex} currentClass={currentClass} />
-        <IrrigationPanel date={selectedDate} stationId={selectedStationId} currentHumidex={currentHumidex} />
-      </div>
-
-      {/* AI Smart Advisor */}
-      <SmartAdvisor
-        date={selectedDate}
-        station={selectedStation?.name}
-        humidex={currentHumidex}
-        comfortClass={currentClass}
-      />
-    </div>
-  );
-}
-
-function Card({ title, children }) {
-  return (
-    <div className="bg-[#1a1f2e] border border-[#2d3548] rounded-xl p-5 space-y-3">
-      <h2 className="text-[#f1f5f9] font-semibold text-sm">{title}</h2>
-      {children}
     </div>
   );
 }
