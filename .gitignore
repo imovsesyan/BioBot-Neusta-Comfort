@@ -27,6 +27,8 @@ models/
 *.h5
 *.pkl
 *.joblib
+# Exception: production model needed for Render deployment
+!biosense360/backend/ml/model.pkl
 
 # Notebook checkpoints
 .ipynb_checkpoints/
