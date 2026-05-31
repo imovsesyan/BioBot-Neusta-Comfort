@@ -35,3 +35,7 @@ models/
 
 # Notebook checkpoints
 .ipynb_checkpoints/
+
+# Frontend build artifacts and dependencies
+biosense360/frontend/node_modules/
+biosense360/frontend/dist/
