@@ -32,7 +32,7 @@ services:
     name: biosense360-frontend
     runtime: static
     buildCommand: cd biosense360/frontend && npm ci && npm run build
-    staticPublishPath: ./biosense360/frontend/dist
+    staticPublishPath: biosense360/frontend/dist
     plan: free
     envVars:
       - key: VITE_API_URL
