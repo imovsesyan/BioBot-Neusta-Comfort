@@ -23,9 +23,6 @@ import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-# Allow running as a top-level script from the backend/ or project root directory.
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -33,10 +30,10 @@ load_dotenv()
 import pandas as pd
 from sqlalchemy.orm import Session
 
-from backend.db.session import SessionLocal, create_all_tables
-from backend.models.measurement import Measurement
-from backend.models.risk_period import RiskPeriod
-from backend.models.station import Station
+from .session import SessionLocal, create_all_tables
+from ..models.measurement import Measurement
+from ..models.risk_period import RiskPeriod
+from ..models.station import Station
 
 # ---------------------------------------------------------------------------
 # Seed CSV paths — tried in order, first match wins
