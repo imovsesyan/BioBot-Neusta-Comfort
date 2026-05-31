@@ -29,6 +29,9 @@ models/
 *.joblib
 # Exception: production model needed for Render deployment
 !biosense360/backend/ml/model.pkl
+# Exception: backend ORM package (not an ML artifact dir) — required at runtime
+!biosense360/backend/models/
+!biosense360/backend/models/*.py
 
 # Notebook checkpoints
 .ipynb_checkpoints/
