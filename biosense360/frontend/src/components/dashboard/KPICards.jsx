@@ -22,7 +22,7 @@ function KPICard({ title, value, sub, color }) {
   );
 }
 
-export default function KPICards({ summary }) {
+export default function KPICards({ summary, allBreakdown, stations = [] }) {
   if (!summary) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -33,8 +33,14 @@ export default function KPICards({ summary }) {
     );
   }
 
-  const breakdown = summary.stations_breakdown || [];
+  // Hottest/Coolest/Danger compare across ALL stations when available, so the
+  // single-station selector doesn't collapse them to one identical value.
+  const breakdown =
+    (allBreakdown && allBreakdown.length ? allBreakdown : summary.stations_breakdown) || [];
   const avgHumidex = summary.avg_humidex ?? 0;
+
+  // Resolve a station id to its display name (falls back to "Station #id").
+  const nameFor = (id) => stations.find((s) => s.id === id)?.name ?? `Station #${id}`;
 
   // % of hours in danger zone — use dangerous_hours from each station
   const totalDangerSlots = breakdown.reduce(
@@ -72,13 +78,13 @@ export default function KPICards({ summary }) {
       <KPICard
         title="Hottest Station"
         value={hottest ? `${hottest.avg_humidex?.toFixed(1) ?? '—'}` : '—'}
-        sub={hottest ? `Station #${hottest.station_id}` : 'No data'}
+        sub={hottest ? nameFor(hottest.station_id) : 'No data'}
         color="#ef4444"
       />
       <KPICard
         title="Coolest Station"
         value={coolest ? `${coolest.avg_humidex?.toFixed(1) ?? '—'}` : '—'}
-        sub={coolest ? `Station #${coolest.station_id}` : 'No data'}
+        sub={coolest ? nameFor(coolest.station_id) : 'No data'}
         color="#22c55e"
       />
     </div>

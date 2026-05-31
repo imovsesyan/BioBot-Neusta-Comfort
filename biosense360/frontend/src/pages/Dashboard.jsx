@@ -25,6 +25,9 @@ export default function Dashboard() {
 
   const { stations } = useStations();
   const { summary, loading: sumLoading } = useRiskSummary(selectedDate, selectedStationId);
+  // All-stations summary — drives the cross-station Hottest/Coolest/Danger KPIs
+  // (the single-station selector above only controls the average + calendar).
+  const { summary: allSummary } = useRiskSummary(selectedDate, null);
 
   // Auto-select first station on load
   useEffect(() => {
@@ -76,7 +79,11 @@ export default function Dashboard() {
           ))}
         </div>
       ) : (
-        <KPICards summary={summary} />
+        <KPICards
+          summary={summary}
+          allBreakdown={allSummary?.stations_breakdown}
+          stations={stations}
+        />
       )}
 
       {/* Monthly Heatmap Calendar */}
